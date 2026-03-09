@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website Pricing — AfriBao</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C8960C;
+    --gold-pale: #E8B84B;
+    --emerald: #1B6B3A;
+    --emerald-bright: #2E9E5A;
+    --sapphire: #1565C0;
+    --sapphire-bright: #5B9BF5;
+    --amethyst: #6A1B9A;
+    --ruby: #B71C1C;
+    --charcoal: #1A1A1A;
+    --near-black: #0A0A0A;
+    --warm-white: #F2E8D5;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+  body {
+    background: var(--near-black);
+    color: var(--warm-white);
+    font-family: 'Outfit', sans-serif;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpolygon points='0,0 0,20 5,15 9,24 12,23 8,14 14,14' fill='%23C8960C' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E"), auto;
+    overflow-x: hidden;
+    padding-top: 76px;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem 4rem;
+    background: #1A1A1A;
+    border-bottom: 1px solid rgba(200,150,12,0.15);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem; letter-spacing: 0.1em;
+    text-decoration: none;
+  }
+  .nav-logo .afri { color: var(--warm-white); }
+  .nav-logo .bao  { color: var(--gold); }
+  .nav-links { display: flex; gap: 0.4rem; align-items: center; }
+  .nav-links a {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--warm-white); text-decoration: none;
+    padding: 0.5rem 1rem;
+    opacity: 0.7; transition: opacity 0.2s, color 0.2s;
+    cursor: inherit;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--gold); }
+  .nav-links a.active-page { color: var(--gold); opacity: 1; }
+  .nav-cta {
+    padding: 0.55rem 1.4rem !important;
+    border: 1px solid var(--gold);
+    color: var(--gold) !important; opacity: 1 !important;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: rgba(200,150,12,0.1) !important; }
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    cursor: inherit; padding: 0.5rem;
+    background: none; border: none;
+  }
+  .hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--warm-white); transition: transform 0.3s, opacity 0.3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ── HERO ── */
+  #hero {
+    position: relative; width: 100%;
+    min-height: 52vh;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    background: #080808;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 60%, rgba(200,150,12,0.12) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 30%, rgba(200,150,12,0.07) 0%, transparent 45%);
+  }
+  .hero-lines {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      rgba(200,150,12,0.03) 0px,
+      rgba(200,150,12,0.03) 1px,
+      transparent 1px,
+      transparent 80px
+    );
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    padding: 3rem 4rem 4rem;
+    max-width: 1200px; width: 100%;
+    margin: 0 auto;
+  }
+  .hero-eyebrow {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 0.5em; text-transform: uppercase;
+    color: var(--gold);
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: block; width: 40px; height: 1px;
+    background: var(--gold);
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 10vw, 9rem);
+    line-height: 0.88; letter-spacing: 0.01em;
+    margin-bottom: 2rem;
+  }
+  .hero-title .line-white  { color: var(--warm-white); display: block; }
+  .hero-title .line-gold   { color: var(--gold); display: block; }
+  .hero-intro {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+    line-height: 1.75;
+    color: rgba(242,232,213,0.7);
+    max-width: 560px;
+  }
+
+  /* ── PRICING SECTION ── */
+  #pricing {
+    background: #ffffff;
+    padding: 8rem 4rem;
+  }
+  .pricing-header {
+    max-width: 1200px; margin: 0 auto 5rem;
+  }
+  .section-eyebrow {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.5em; text-transform: uppercase;
+    color: var(--gold);
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 1.2rem;
+  }
+  .section-eyebrow::before {
+    content: ''; display: block; width: 32px; height: 1px;
+    background: var(--gold);
+  }
+  .pricing-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    line-height: 0.9; color: #111111;
+    margin-bottom: 1.2rem;
+  }
+  .pricing-headline span { color: var(--gold); }
+  .pricing-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem; line-height: 1.7;
+    color: rgba(17,17,17,0.65);
+    max-width: 560px;
+  }
+
+  /* ── CARDS GRID ── */
+  .pricing-grid {
+    max-width: 1200px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid rgba(17,17,17,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .price-card {
+    padding: 3rem 2.5rem;
+    border-right: 1px solid rgba(17,17,17,0.1);
+    position: relative;
+    display: flex; flex-direction: column;
+    transition: transform 0.3s;
+  }
+  .price-card:last-child { border-right: none; }
+
+  /* STARTER */
+  .price-card[data-tier="starter"] {
+    background: #ffffff;
+  }
+  /* BUSINESS — featured */
+  .price-card[data-tier="business"] {
+    background: #111111;
+    color: var(--warm-white);
+    transform: scaleY(1.02);
+    z-index: 2;
+    box-shadow: 0 0 60px rgba(0,0,0,0.25);
+  }
+  /* ADVANCED */
+  .price-card[data-tier="advanced"] {
+    background: #ffffff;
+  }
+
+  .card-badge {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.4em; text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 2rem;
+    width: fit-content;
+  }
+  .price-card[data-tier="starter"]  .card-badge { background: rgba(200,150,12,0.1); color: var(--gold); }
+  .price-card[data-tier="business"] .card-badge { background: var(--gold); color: #111111; }
+  .price-card[data-tier="advanced"] .card-badge { background: rgba(17,17,17,0.07); color: #111111; }
+
+  .card-tier {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem; letter-spacing: 0.05em;
+    margin-bottom: 0.3rem;
+  }
+  .price-card[data-tier="starter"]  .card-tier,
+  .price-card[data-tier="advanced"] .card-tier { color: #111111; }
+  .price-card[data-tier="business"] .card-tier { color: var(--warm-white); }
+
+  .card-subtitle {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+  .price-card[data-tier="starter"]  .card-subtitle,
+  .price-card[data-tier="advanced"] .card-subtitle { color: rgba(17,17,17,0.45); }
+  .price-card[data-tier="business"] .card-subtitle { color: rgba(242,232,213,0.5); }
+
+  .card-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.8rem; line-height: 1;
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.02em;
+  }
+  .price-card[data-tier="starter"]  .card-price,
+  .price-card[data-tier="advanced"] .card-price { color: #111111; }
+  .price-card[data-tier="business"] .card-price { color: var(--gold); }
+
+  .price-note {
+    font-size: 0.72rem; letter-spacing: 0.1em;
+    margin-bottom: 2.5rem;
+  }
+  .price-card[data-tier="starter"]  .price-note,
+  .price-card[data-tier="advanced"] .price-note { color: rgba(17,17,17,0.4); }
+  .price-card[data-tier="business"] .price-note { color: rgba(242,232,213,0.4); }
+
+  .card-divider {
+    height: 1px; margin-bottom: 2rem;
+  }
+  .price-card[data-tier="starter"]  .card-divider,
+  .price-card[data-tier="advanced"] .card-divider { background: rgba(17,17,17,0.1); }
+  .price-card[data-tier="business"] .card-divider { background: rgba(200,150,12,0.25); }
+
+  .card-features {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 0.85rem;
+    flex: 1;
+    margin-bottom: 2.5rem;
+  }
+  .card-features li {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    font-size: 0.82rem; line-height: 1.5;
+  }
+  .price-card[data-tier="starter"]  .card-features li,
+  .price-card[data-tier="advanced"] .card-features li { color: rgba(17,17,17,0.75); }
+  .price-card[data-tier="business"] .card-features li { color: rgba(242,232,213,0.8); }
+
+  .feat-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    flex-shrink: 0; margin-top: 0.45rem;
+  }
+  .price-card[data-tier="starter"]  .feat-dot { background: var(--gold); }
+  .price-card[data-tier="business"] .feat-dot { background: var(--gold); }
+  .price-card[data-tier="advanced"] .feat-dot { background: #111111; }
+
+  .card-cta {
+    display: block; text-align: center;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.95rem 1.5rem;
+    border-radius: 3px;
+    transition: all 0.2s;
+    cursor: inherit;
+  }
+  .price-card[data-tier="starter"]  .card-cta {
+    border: 1.5px solid #111111; color: #111111;
+  }
+  .price-card[data-tier="starter"]  .card-cta:hover {
+    background: #111111; color: var(--warm-white);
+  }
+  .price-card[data-tier="business"] .card-cta {
+    background: var(--gold); color: #111111;
+  }
+  .price-card[data-tier="business"] .card-cta:hover {
+    background: var(--gold-pale);
+  }
+  .price-card[data-tier="advanced"] .card-cta {
+    border: 1.5px solid rgba(17,17,17,0.3); color: #111111;
+  }
+  .price-card[data-tier="advanced"] .card-cta:hover {
+    background: #111111; color: var(--warm-white);
+  }
+
+  /* ── PROCESS SECTION ── */
+  #process {
+    background: #0D0D0D;
+    padding: 8rem 4rem;
+  }
+  .process-inner {
+    max-width: 1200px; margin: 0 auto;
+  }
+  .process-header { margin-bottom: 5rem; }
+  .process-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    line-height: 0.9; color: var(--warm-white);
+    margin-bottom: 1.2rem;
+  }
+  .process-headline span { color: var(--gold); }
+  .process-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; line-height: 1.7;
+    color: rgba(242,232,213,0.55);
+    max-width: 520px;
+  }
+
+  /* Steps — horizontal timeline on desktop */
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  /* Connecting line */
+  .process-steps::before {
+    content: '';
+    position: absolute;
+    top: 28px; left: 28px; right: 28px;
+    height: 1px;
+    background: linear-gradient(to right,
+      rgba(200,150,12,0.6),
+      rgba(200,150,12,0.2) 80%,
+      transparent
+    );
+  }
+  .step {
+    padding: 0 1.5rem 0 0;
+    position: relative;
+  }
+  .step-num {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    border: 1px solid rgba(200,150,12,0.35);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.5rem;
+    position: relative; z-index: 2;
+    background: #0D0D0D;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .step:hover .step-num {
+    border-color: var(--gold);
+    background: rgba(200,150,12,0.08);
+  }
+  .step-num-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem; color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+  .step-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--warm-white);
+    margin-bottom: 0.6rem;
+    line-height: 1.4;
+  }
+  .step-desc {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.77rem; line-height: 1.65;
+    color: rgba(242,232,213,0.45);
+  }
+
+  /* ── CTA ── */
+  #cta {
+    background: #080808;
+    padding: 8rem 4rem;
+    text-align: center;
+  }
+  .cta-inner { max-width: 700px; margin: 0 auto; }
+  .cta-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 10vw, 7rem);
+    line-height: 0.88; color: var(--warm-white);
+    margin-bottom: 1.5rem;
+  }
+  .cta-headline .gold { color: var(--gold); }
+  .cta-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; line-height: 1.7;
+    color: rgba(242,232,213,0.55);
+    margin-bottom: 3rem;
+  }
+  .cta-actions {
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+  }
+  .btn-primary {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.9rem 2rem;
+    background: var(--warm-white); color: #111111;
+    border-radius: 3px;
+    transition: all 0.2s; cursor: inherit;
+  }
+  .btn-primary:hover { background: rgba(242,232,213,0.88); transform: translateY(-2px); }
+  .btn-ghost {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.9rem 2rem;
+    border: 1px solid rgba(200,150,12,0.4); color: var(--gold);
+    border-radius: 3px;
+    transition: all 0.2s; cursor: inherit;
+  }
+  .btn-ghost:hover { background: rgba(200,150,12,0.08); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #111111;
+    border-top: 1px solid rgba(200,150,12,0.12);
+    padding: 2.5rem 4rem;
+  }
+  .footer-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem; letter-spacing: 0.1em;
+    text-decoration: none;
+  }
+  .footer-afri { color: var(--warm-white); }
+  .footer-bao  { color: var(--gold); }
+  .footer-tagline {
+    font-size: 0.68rem; letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba(242,232,213,0.35);
+  }
+  .footer-copy {
+    font-size: 0.68rem; color: rgba(242,232,213,0.3);
+    letter-spacing: 0.05em;
+  }
+  .footer-copy a { color: rgba(242,232,213,0.4); text-decoration: none; }
+
+  /* ── REVEAL ANIMATIONS ── */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+  .reveal-d1 { transition-delay: 0.1s; }
+  .reveal-d2 { transition-delay: 0.2s; }
+  .reveal-d3 { transition-delay: 0.3s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    nav { padding: 1.2rem 2rem; }
+    .hero-content, #pricing, #process, #cta { padding-left: 2rem; padding-right: 2rem; }
+    .pricing-grid { grid-template-columns: 1fr; border: none; gap: 2px; }
+    .price-card[data-tier="business"] { transform: none; }
+    .price-card { border-right: none; border-bottom: 1px solid rgba(17,17,17,0.1); }
+    .price-card:last-child { border-bottom: none; }
+    .process-steps { grid-template-columns: repeat(3, 1fr); gap: 3rem 2rem; }
+    .process-steps::before { display: none; }
+    footer { padding: 2rem; }
+  }
+  @media (max-width: 600px) {
+    nav { padding: 1rem 1.5rem; }
+    .hamburger { display: flex; }
+    .nav-links {
+      display: none; position: fixed;
+      top: 60px; left: 0; right: 0;
+      background: #1A1A1A;
+      flex-direction: column; align-items: flex-start;
+      padding: 1.5rem; gap: 0;
+      border-top: 1px solid rgba(200,150,12,0.15);
+      z-index: 99;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a {
+      width: 100%; padding: 0.9rem 0.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.8rem;
+    }
+    .nav-cta { margin-top: 0.5rem; border-bottom: none !important; }
+    .hero-content { padding: 2rem 1.5rem 3rem; }
+    .hero-title { font-size: clamp(3.5rem, 15vw, 6rem); }
+    #pricing { padding: 4rem 1.5rem; }
+    .pricing-headline { font-size: clamp(2.5rem, 10vw, 4rem); }
+    #process { padding: 4rem 1.5rem; }
+    .process-steps { grid-template-columns: 1fr 1fr; gap: 2.5rem 1.5rem; }
+    .process-headline { font-size: clamp(2.5rem, 10vw, 4rem); }
+    #cta { padding: 5rem 1.5rem; }
+    .cta-headline { font-size: clamp(3rem, 14vw, 5rem); }
+    .cta-actions { flex-direction: column; align-items: center; }
+    .btn-primary, .btn-ghost { width: 100%; max-width: 280px; text-align: center; }
+    .footer-inner { flex-direction: column; gap: 0.5rem; }
+  }
+  @media (max-width: 400px) {
+    .process-steps { grid-template-columns: 1fr; }
+  }
+
+  /* Touch / keyboard friendly cursor reset */
+  @media (hover: none) {
+    body { cursor: auto; }
+    a, button { cursor: pointer; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo"><span class="afri">AFRI</span><span class="bao">BAO</span></a>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="afribao-about.html">About Us</a>
+    <a href="afribao-solutions.html">Our Solutions</a>
+    <a href="afribao-contact.html" class="nav-cta active-page">Start Here</a>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow reveal">Website Development</p>
+    <h1 class="hero-title reveal reveal-d1">
+      <span class="line-white">Your Digital</span>
+      <span class="line-gold">Foundation.</span>
+    </h1>
+    <p class="hero-intro reveal reveal-d2">Choose the package that fits your business. Every option is built to the same standard — professional, purposeful, and positioned for growth.</p>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="pricing-header reveal">
+    <p class="section-eyebrow">Pricing</p>
+    <h2 class="pricing-headline">Three Tiers.<br><span>One Standard.</span></h2>
+    <p class="pricing-desc">Every package is built with the same commitment to quality. The difference is scale, not standard.</p>
+  </div>
+
+  <div class="pricing-grid">
+
+    <!-- STARTER -->
+    <div class="price-card reveal" data-tier="starter">
+      <span class="card-badge">Starter</span>
+      <p class="card-tier">STARTER</p>
+      <p class="card-subtitle">For new businesses establishing their presence</p>
+      <p class="card-price">R2 500</p>
+      <p class="price-note">— R4 900</p>
+      <div class="card-divider"></div>
+      <ul class="card-features">
+        <li><span class="feat-dot"></span><span>Up to 5 pages — Home, About, Services, Contact + 1 custom</span></li>
+        <li><span class="feat-dot"></span><span>Mobile-responsive design</span></li>
+        <li><span class="feat-dot"></span><span>Brand-aligned visual identity</span></li>
+        <li><span class="feat-dot"></span><span>Basic SEO setup</span></li>
+        <li><span class="feat-dot"></span><span>Contact form integration</span></li>
+        <li><span class="feat-dot"></span><span>Google Analytics setup</span></li>
+        <li><span class="feat-dot"></span><span>30-day post-launch support</span></li>
+      </ul>
+      <a href="afribao-contact.html" class="card-cta">Get Started</a>
+    </div>
+
+    <!-- BUSINESS -->
+    <div class="price-card reveal reveal-d1" data-tier="business">
+      <span class="card-badge">Most Popular</span>
+      <p class="card-tier">BUSINESS</p>
+      <p class="card-subtitle">For growing businesses ready to compete</p>
+      <p class="card-price">R5 900</p>
+      <p class="price-note">— R9 900</p>
+      <div class="card-divider"></div>
+      <ul class="card-features">
+        <li><span class="feat-dot"></span><span>Up to 10 pages — fully custom architecture</span></li>
+        <li><span class="feat-dot"></span><span>Up to 3 design animations included</span></li>
+        <li><span class="feat-dot"></span><span>Full brand identity integration</span></li>
+        <li><span class="feat-dot"></span><span>Advanced SEO strategy & implementation</span></li>
+        <li><span class="feat-dot"></span><span>CMS integration for content management</span></li>
+        <li><span class="feat-dot"></span><span>Social media & email integrations</span></li>
+        <li><span class="feat-dot"></span><span>Performance & speed optimisation</span></li>
+        <li><span class="feat-dot"></span><span>90-day post-launch support</span></li>
+      </ul>
+      <a href="afribao-contact.html" class="card-cta">Get Started</a>
+    </div>
+
+    <!-- ADVANCED / ECOMMERCE -->
+    <div class="price-card reveal reveal-d2" data-tier="advanced">
+      <span class="card-badge">Advanced / E-Commerce</span>
+      <p class="card-tier">ADVANCED</p>
+      <p class="card-subtitle">For businesses selling online or scaling operations</p>
+      <p class="card-price">R15 000</p>
+      <p class="price-note">and above</p>
+      <div class="card-divider"></div>
+      <ul class="card-features">
+        <li><span class="feat-dot"></span><span>Full e-commerce store — products, cart, checkout</span></li>
+        <li><span class="feat-dot"></span><span>Payment gateway integration (local & international)</span></li>
+        <li><span class="feat-dot"></span><span>Inventory & order management</span></li>
+        <li><span class="feat-dot"></span><span>Customer account portals</span></li>
+        <li><span class="feat-dot"></span><span>Advanced automation & CRM connectivity</span></li>
+        <li><span class="feat-dot"></span><span>Custom functionality development</span></li>
+        <li><span class="feat-dot"></span><span>Security & compliance setup</span></li>
+        <li><span class="feat-dot"></span><span>6-month post-launch support</span></li>
+      </ul>
+      <a href="afribao-contact.html" class="card-cta">Get Started</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="process-inner">
+    <div class="process-header reveal">
+      <p class="section-eyebrow" style="color: var(--gold);">The Process</p>
+      <h2 class="process-headline">What to <span>Expect.</span></h2>
+      <p class="process-desc">A clear, structured process from first contact to final launch — and beyond.</p>
+    </div>
+
+    <div class="process-steps">
+
+      <div class="step reveal">
+        <div class="step-num"><span class="step-num-text">01</span></div>
+        <p class="step-title">Submit Your Request</p>
+        <p class="step-desc">Select your package and reach out. We confirm receipt and schedule your intake call within 24 hours.</p>
+      </div>
+
+      <div class="step reveal reveal-d1">
+        <div class="step-num"><span class="step-num-text">02</span></div>
+        <p class="step-title">Fill In Our Online Form</p>
+        <p class="step-desc">Complete our detailed brief — your goals, brand, audience, and content. This shapes everything we build.</p>
+      </div>
+
+      <div class="step reveal reveal-d2">
+        <div class="step-num"><span class="step-num-text">03</span></div>
+        <p class="step-title">Receive a Demo Preview</p>
+        <p class="step-desc">We present a design preview for your review. Feedback is incorporated before development begins.</p>
+      </div>
+
+      <div class="step reveal reveal-d1">
+        <div class="step-num"><span class="step-num-text">04</span></div>
+        <p class="step-title">Deposit &amp; Development</p>
+        <p class="step-desc">Once approved, a deposit is required to begin. Full development kicks off with regular progress updates.</p>
+      </div>
+
+      <div class="step reveal reveal-d2">
+        <div class="step-num"><span class="step-num-text">05</span></div>
+        <p class="step-title">Review &amp; Launch</p>
+        <p class="step-desc">Final review, testing across devices, and sign-off. Your site goes live on your domain, fully optimised.</p>
+      </div>
+
+      <div class="step reveal reveal-d3">
+        <div class="step-num"><span class="step-num-text">06</span></div>
+        <p class="step-title">Ongoing Support</p>
+        <p class="step-desc">Post-launch support covers updates, fixes, and guidance — keeping your digital foundation performing.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-inner reveal">
+    <h2 class="cta-headline">Ready to <span class="gold">Build?</span></h2>
+    <p class="cta-sub">Your digital foundation is the first brick. Let's lay it well.</p>
+    <div class="cta-actions">
+      <a href="mailto:hello@afribao.com?subject=Website%20Enquiry" class="btn-primary">Send Us a Message</a>
+      <a href="afribao-solutions.html" class="btn-ghost">Explore All Solutions</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <a href="index.html" class="footer-logo">
+      <span class="footer-afri">AFRI</span><span class="footer-bao">BAO</span>
+    </a>
+    <p class="footer-tagline">The African Capability Engine</p>
+    <p class="footer-copy">&copy; 2026 AfriBao. All rights reserved. &nbsp;&middot;&nbsp; <a href="mailto:hello@afribao.com">hello@afribao.com</a> &nbsp;&middot;&nbsp; afribao.com</p>
+  </div>
+</footer>
+
+<script>
+// ── HAMBURGER ──
+const hamburger = document.getElementById('hamburger');
+const navLinks   = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  navLinks.classList.toggle('open');
+});
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  hamburger.classList.remove('open');
+  navLinks.classList.remove('open');
+}));
+
+// ── SCROLL REVEAL ──
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+</script>
+</body>
+</html>

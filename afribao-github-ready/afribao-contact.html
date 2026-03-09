@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — AfriBao</title>
+<meta name="description" content="Start your transformation with AfriBao. Reach out to discuss your business and how we can help raise it to global standards.">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C8960C;
+    --gold-pale: #E8B84B;
+    --charcoal: #1A1A1A;
+    --near-black: #0D0D0D;
+    --dark-mid: #141414;
+    --warm-white: #F2E8D5;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--charcoal);
+    color: var(--warm-white);
+    font-family: 'Outfit', sans-serif;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpolygon points='0,0 0,20 5,15 9,24 12,23 8,14 14,14' fill='%23C8960C' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E"), auto;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* CURSOR */
+  #cursor-dot {
+    position: fixed; width: 8px; height: 8px;
+    background: var(--gold); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    mix-blend-mode: screen;
+  }
+  #cursor-ring {
+    position: fixed; width: 36px; height: 36px;
+    border: 1.5px solid rgba(200,150,12,0.45);
+    border-radius: 50%; pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: left 0.15s ease, top 0.15s ease;
+    mix-blend-mode: screen;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem 4rem;
+    background: var(--charcoal);
+    border-bottom: 1px solid rgba(200,150,12,0.12);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem; letter-spacing: 0.1em;
+    text-decoration: none;
+  }
+  .nav-logo .afri { color: var(--warm-white); }
+  .nav-logo .bao  { color: var(--gold); }
+  .nav-links { display: flex; gap: 0.4rem; align-items: center; }
+  .nav-links a {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--warm-white); text-decoration: none;
+    padding: 0.5rem 1rem;
+    opacity: 0.7; transition: opacity 0.2s, color 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--gold); }
+  .nav-links a.active-page { color: var(--gold); opacity: 1; }
+  .nav-cta {
+    padding: 0.55rem 1.4rem !important;
+    border: 1px solid var(--gold);
+    color: var(--gold) !important; opacity: 1 !important;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: rgba(200,150,12,0.1) !important; }
+
+  /* HAMBURGER */
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; cursor: pointer; padding: 4px;
+  }
+  .hamburger span {
+    display: block; width: 24px; height: 1.5px;
+    background: var(--warm-white); transition: all 0.3s;
+  }
+
+  /* PAGE LAYOUT */
+  .page-wrapper {
+    min-height: 100vh;
+    padding-top: 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* LEFT PANEL */
+  .left-panel {
+    position: sticky;
+    top: 80px;
+    height: calc(100vh - 80px);
+    background: var(--near-black);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 5rem 4rem;
+    overflow: hidden;
+  }
+
+  .left-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 20% 80%, rgba(200,150,12,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .left-bg-number {
+    position: absolute;
+    bottom: -2rem;
+    right: -1rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22rem;
+    color: rgba(200,150,12,0.04);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .left-top { position: relative; z-index: 1; }
+
+  .left-eyebrow {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+
+  .left-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 6vw, 5.5rem);
+    line-height: 0.95;
+    color: var(--warm-white);
+    margin-bottom: 2rem;
+  }
+
+  .left-headline .gold { color: var(--gold); }
+
+  .left-body {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: rgba(242,232,213,0.65);
+    max-width: 380px;
+  }
+
+  .left-divider {
+    width: 40px;
+    height: 1px;
+    background: rgba(200,150,12,0.4);
+    margin: 2.5rem 0;
+  }
+
+  .contact-details { position: relative; z-index: 1; }
+
+  .contact-detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .detail-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(200,150,12,0.6);
+  }
+
+  .detail-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--warm-white);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .detail-value:hover { color: var(--gold); }
+
+  .left-bottom { position: relative; z-index: 1; }
+
+  .left-closing {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: rgba(200,150,12,0.7);
+    border-left: 2px solid rgba(200,150,12,0.3);
+    padding-left: 1.2rem;
+    line-height: 1.7;
+  }
+
+  /* RIGHT PANEL */
+  .right-panel {
+    background: var(--charcoal);
+    padding: 5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .form-header {
+    margin-bottom: 3rem;
+  }
+
+  .form-eyebrow {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .form-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    color: var(--warm-white);
+    line-height: 1;
+  }
+
+  /* FORM */
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-group label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(242,232,213,0.5);
+    transition: color 0.2s;
+  }
+
+  .form-group:focus-within label {
+    color: var(--gold);
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(242,232,213,0.15);
+    padding: 0.8rem 0;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    color: var(--warm-white);
+    outline: none;
+    transition: border-color 0.3s;
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .form-group select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C8960C' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    padding-right: 2rem;
+  }
+
+  .form-group select option {
+    background: var(--charcoal);
+    color: var(--warm-white);
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-bottom-color: var(--gold);
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color: rgba(242,232,213,0.2);
+    font-size: 0.85rem;
+  }
+
+  .form-group textarea {
+    resize: none;
+    height: 100px;
+    line-height: 1.7;
+  }
+
+  /* SOLUTION SELECTOR */
+  .solution-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+  }
+
+  .solution-option {
+    position: relative;
+  }
+
+  .solution-option input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0; height: 0;
+  }
+
+  .solution-option label {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid rgba(242,232,213,0.1);
+    cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-transform: none;
+    color: rgba(242,232,213,0.55);
+    transition: all 0.2s;
+  }
+
+  .solution-option label::before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    border: 1px solid rgba(200,150,12,0.3);
+    transition: all 0.2s;
+    background: transparent;
+  }
+
+  .solution-option input:checked + label {
+    border-color: rgba(200,150,12,0.4);
+    color: var(--warm-white);
+    background: rgba(200,150,12,0.05);
+  }
+
+  .solution-option input:checked + label::before {
+    background: var(--gold);
+    border-color: var(--gold);
+    box-shadow: 0 0 8px rgba(200,150,12,0.4);
+  }
+
+  .solution-option label:hover {
+    border-color: rgba(200,150,12,0.25);
+    color: var(--warm-white);
+  }
+
+  .solution-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    min-width: 6px;
+  }
+
+  /* SUBMIT */
+  .form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .form-note {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    color: rgba(242,232,213,0.3);
+    font-style: italic;
+  }
+
+  .btn-submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: var(--gold);
+    color: var(--charcoal);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 1rem 2.2rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    text-decoration: none;
+  }
+
+  .btn-submit:hover {
+    background: var(--gold-pale);
+    transform: translateY(-2px);
+  }
+
+  .btn-submit svg {
+    transition: transform 0.2s;
+  }
+
+  .btn-submit:hover svg {
+    transform: translateX(4px);
+  }
+
+  /* SUCCESS STATE */
+  .success-state {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    gap: 1.5rem;
+  }
+
+  .success-state.visible { display: flex; }
+
+  .success-icon {
+    width: 60px;
+    height: 60px;
+    border: 1.5px solid var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .success-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    color: var(--warm-white);
+    line-height: 1;
+  }
+
+  .success-headline .gold { color: var(--gold); }
+
+  .success-body {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    color: rgba(242,232,213,0.6);
+    line-height: 1.8;
+    max-width: 360px;
+  }
+
+  .success-closing {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: rgba(200,150,12,0.7);
+  }
+
+  /* FOOTER */
+  #footer {
+    background: var(--near-black);
+    border-top: 1px solid rgba(200,150,12,0.12);
+    padding: 2rem 4rem;
+    grid-column: 1 / -1;
+  }
+
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.1em;
+  }
+
+  .footer-afri { color: var(--warm-white); }
+  .footer-bao  { color: var(--gold); }
+
+  .footer-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: rgba(242,232,213,0.4);
+  }
+
+  .footer-copy {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    color: rgba(242,232,213,0.3);
+    letter-spacing: 0.03em;
+  }
+
+  .footer-copy a { color: rgba(200,150,12,0.55); text-decoration: none; }
+  .footer-copy a:hover { color: var(--gold); }
+
+  /* REVEAL ANIMATIONS */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-d1 { transition-delay: 0.1s; }
+  .reveal-d2 { transition-delay: 0.25s; }
+  .reveal-d3 { transition-delay: 0.4s; }
+  .reveal-d4 { transition-delay: 0.55s; }
+  .reveal-d5 { transition-delay: 0.7s; }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    nav { padding: 1.2rem 2rem; }
+
+    .nav-links {
+      display: none;
+      position: fixed;
+      top: 58px; left: 0; right: 0;
+      flex-direction: column;
+      background: var(--charcoal);
+      border-bottom: 1px solid rgba(200,150,12,0.12);
+      padding: 1rem 2rem 1.5rem;
+      gap: 0.2rem;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a { padding: 0.6rem 0; opacity: 0.8; }
+    .nav-cta { margin-top: 0.5rem; }
+    .hamburger { display: flex; }
+
+    .page-wrapper { grid-template-columns: 1fr; }
+
+    .left-panel {
+      position: relative;
+      top: 0;
+      height: auto;
+      padding: 4rem 2rem;
+    }
+
+    .left-bg-number { font-size: 14rem; }
+
+    .right-panel { padding: 3rem 2rem 5rem; }
+
+    .form-row { grid-template-columns: 1fr; }
+
+    #footer { padding: 2rem 1.5rem; }
+    .footer-inner { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+  }
+
+  @media (max-width: 600px) {
+    .solution-selector { grid-template-columns: 1fr; }
+    .form-footer { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo"><span class="afri">AFRI</span><span class="bao">BAO</span></a>
+  <div class="nav-links" id="nav-links">
+    <a href="index.html">Home</a>
+    <a href="afribao-about.html">About Us</a>
+    <a href="afribao-solutions.html">Our Solutions</a>
+    <a href="afribao-contact.html" class="active-page nav-cta">Start Here</a>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="page-wrapper">
+
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <div class="left-top">
+      <p class="left-eyebrow reveal reveal-d1">Get In Touch</p>
+      <h1 class="left-headline reveal reveal-d2">
+        LET'S BUILD<br>SOMETHING<br><span class="gold">THAT LASTS.</span>
+      </h1>
+      <div class="left-divider reveal reveal-d3"></div>
+      <p class="left-body reveal reveal-d3">
+        Every transformation starts with a conversation. Tell us where your business is — and where you want it to go. We'll take it from there.
+      </p>
+    </div>
+
+    <div class="contact-details reveal reveal-d4">
+      <div class="contact-detail-item">
+        <span class="detail-label">Email</span>
+        <a href="mailto:hello@afribao.com" class="detail-value">hello@afribao.com</a>
+      </div>
+      <div class="contact-detail-item">
+        <span class="detail-label">Base</span>
+        <span class="detail-value">Gauteng, South Africa</span>
+      </div>
+      <div class="contact-detail-item">
+        <span class="detail-label">Operating</span>
+        <span class="detail-value">Pan-African</span>
+      </div>
+    </div>
+
+    <div class="left-bottom reveal reveal-d5">
+      <p class="left-closing">
+        "We tend the roots.<br>You grow the tree."
+      </p>
+    </div>
+
+    <span class="left-bg-number">01</span>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+    <div class="form-header reveal reveal-d1">
+      <p class="form-eyebrow">Start Your Transformation</p>
+      <h2 class="form-title">TELL US ABOUT YOUR BUSINESS</h2>
+    </div>
+
+    <form class="contact-form reveal reveal-d2" id="contact-form" novalidate>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" placeholder="Your name" required>
+        </div>
+        <div class="form-group">
+          <label for="business">Business Name</label>
+          <input type="text" id="business" name="business" placeholder="Your business" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="you@yourbusiness.com" required>
+        </div>
+        <div class="form-group">
+          <label for="country">Country</label>
+          <select id="country" name="country">
+            <option value="" disabled selected>Select country</option>
+            <option>South Africa</option>
+            <option>Nigeria</option>
+            <option>Kenya</option>
+            <option>Ghana</option>
+            <option>Ethiopia</option>
+            <option>Tanzania</option>
+            <option>Uganda</option>
+            <option>Zimbabwe</option>
+            <option>Zambia</option>
+            <option>Botswana</option>
+            <option>Namibia</option>
+            <option>Mozambique</option>
+            <option>Rwanda</option>
+            <option>Senegal</option>
+            <option>Côte d'Ivoire</option>
+            <option>Cameroon</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>What Are You Interested In?</label>
+        <div class="solution-selector">
+          <div class="solution-option">
+            <input type="checkbox" id="sol-web" name="solutions" value="Website Development">
+            <label for="sol-web">
+              <span class="solution-dot" style="background:#C8960C;"></span>
+              Premium Website
+            </label>
+          </div>
+          <div class="solution-option">
+            <input type="checkbox" id="sol-sys" name="solutions" value="Systems & Automation">
+            <label for="sol-sys">
+              <span class="solution-dot" style="background:#E65100;"></span>
+              Systems & Automation
+            </label>
+          </div>
+          <div class="solution-option">
+            <input type="checkbox" id="sol-consult" name="solutions" value="Strategic Consulting">
+            <label for="sol-consult">
+              <span class="solution-dot" style="background:#6A1B9A;"></span>
+              Strategic Consulting
+            </label>
+          </div>
+          <div class="solution-option">
+            <input type="checkbox" id="sol-start" name="solutions" value="Startup Enablement">
+            <label for="sol-start">
+              <span class="solution-dot" style="background:#2E7D32;"></span>
+              Startup Enablement
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="stage">Business Stage</label>
+        <select id="stage" name="stage">
+          <option value="" disabled selected>Where is your business right now?</option>
+          <option>Just starting out (0–1 years)</option>
+          <option>Early stage (1–3 years)</option>
+          <option>Growing (3–7 years)</option>
+          <option>Established (7+ years)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="message">Tell Us More</label>
+        <textarea id="message" name="message" placeholder="What's your biggest challenge right now? What does success look like for your business?"></textarea>
+      </div>
+
+      <div class="form-footer">
+        <p class="form-note">We respond within 2 business days.</p>
+        <button type="submit" class="btn-submit">
+          Send Enquiry
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+    </form>
+
+    <!-- SUCCESS STATE -->
+    <div class="success-state" id="success-state">
+      <div class="success-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M5 12l5 5L20 7" stroke="#C8960C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h2 class="success-headline">MESSAGE<br><span class="gold">RECEIVED.</span></h2>
+      <p class="success-body">
+        Thank you for reaching out. We'll review your enquiry and get back to you within 2 business days. This is where your transformation begins.
+      </p>
+      <p class="success-closing">— The AfriBao Team</p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <div class="footer-inner">
+      <span class="footer-logo"><span class="footer-afri">AFRI</span><span class="footer-bao">BAO</span></span>
+      <p class="footer-tagline">The African Capability Engine</p>
+      <p class="footer-copy">&copy; 2026 AfriBao. All rights reserved. &nbsp;&middot;&nbsp; <a href="mailto:hello@afribao.com">hello@afribao.com</a> &nbsp;&middot;&nbsp; afribao.com</p>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  // Cursor
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  document.addEventListener('mousemove', e => {
+    dot.style.left = e.clientX + 'px';
+    dot.style.top = e.clientY + 'px';
+    ring.style.left = e.clientX + 'px';
+    ring.style.top = e.clientY + 'px';
+  });
+
+  // Nav hamburger
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('nav-links');
+  hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Form submission
+  const form = document.getElementById('contact-form');
+  const successState = document.getElementById('success-state');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const business = document.getElementById('business').value.trim();
+
+    if (!name || !email || !business) {
+      // Simple inline validation highlight
+      [document.getElementById('name'), document.getElementById('email'), document.getElementById('business')].forEach(field => {
+        if (!field.value.trim()) {
+          field.style.borderBottomColor = '#B71C1C';
+          field.addEventListener('input', () => field.style.borderBottomColor = '', { once: true });
+        }
+      });
+      return;
+    }
+
+    // Collect solutions
+    const solutions = [...document.querySelectorAll('input[name="solutions"]:checked')]
+      .map(cb => cb.value).join(', ') || 'Not specified';
+
+    const stage = document.getElementById('stage').value || 'Not specified';
+    const country = document.getElementById('country').value || 'Not specified';
+    const message = document.getElementById('message').value;
+
+    const subject = encodeURIComponent(`AfriBao Enquiry — ${business}`);
+    const body = encodeURIComponent(
+`New Enquiry from AfriBao Contact Form
+
+Name: ${name}
+Business: ${business}
+Email: ${email}
+Country: ${country}
+Business Stage: ${stage}
+Solutions of Interest: ${solutions}
+
+Message:
+${message || 'No message provided.'}
+
+---
+Sent via afribao.com`
+    );
+
+    window.location.href = `mailto:hello@afribao.com?subject=${subject}&body=${body}`;
+
+    // Show success state
+    setTimeout(() => {
+      form.style.display = 'none';
+      successState.classList.add('visible');
+    }, 400);
+  });
+</script>
+</body>
+</html>

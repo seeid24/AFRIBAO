@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Work — AfriBao</title>
+<meta name="description" content="Websites built by AfriBao for African businesses ready to be seen.">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C8960C;
+    --gold-pale: #E8B84B;
+    --emerald: #1B6B3A;
+    --amethyst: #6A1B9A;
+    --ruby: #B71C1C;
+    --charcoal: #1A1A1A;
+    --near-black: #0D0D0D;
+    --dark-mid: #141414;
+    --warm-white: #F2E8D5;
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--charcoal);
+    color: var(--warm-white);
+    font-family: 'Outfit', sans-serif;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpolygon points='0,0 0,20 5,15 9,24 12,23 8,14 14,14' fill='%23C8960C' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E"), auto;
+    overflow-x: hidden;
+  }
+
+  /* CURSOR */
+  #cursor-dot { position: fixed; width: 8px; height: 8px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); mix-blend-mode: screen; }
+  #cursor-ring { position: fixed; width: 36px; height: 36px; border: 1.5px solid rgba(200,150,12,0.45); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: left 0.15s ease, top 0.15s ease; mix-blend-mode: screen; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.4rem 4rem; background: var(--charcoal); border-bottom: 1px solid rgba(200,150,12,0.12); }
+  .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 0.1em; text-decoration: none; }
+  .nav-logo .afri { color: var(--warm-white); }
+  .nav-logo .bao  { color: var(--gold); }
+  .nav-links { display: flex; gap: 0.4rem; align-items: center; }
+  .nav-links a { font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--warm-white); text-decoration: none; padding: 0.5rem 1rem; opacity: 0.7; transition: opacity 0.2s, color 0.2s; }
+  .nav-links a:hover { opacity: 1; color: var(--gold); }
+  .nav-links a.active-page { color: var(--gold); opacity: 1; }
+  .nav-cta { padding: 0.55rem 1.4rem !important; border: 1px solid var(--gold); color: var(--gold) !important; opacity: 1 !important; transition: background 0.2s !important; }
+  .nav-cta:hover { background: rgba(200,150,12,0.1) !important; }
+  .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+  .hamburger span { display: block; width: 24px; height: 1.5px; background: var(--warm-white); }
+
+  /* PAGE HERO */
+  #page-hero { padding: 160px 4rem 80px; background: var(--near-black); position: relative; overflow: hidden; }
+  #page-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 50%, rgba(200,150,12,0.05) 0%, transparent 60%); pointer-events: none; }
+  .hero-bg-text { position: absolute; right: -2rem; top: 50%; transform: translateY(-50%); font-family: 'Bebas Neue', sans-serif; font-size: 22rem; color: rgba(200,150,12,0.04); line-height: 1; pointer-events: none; user-select: none; white-space: nowrap; }
+  .hero-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: flex-end; gap: 4rem; flex-wrap: wrap; }
+  .hero-left { max-width: 640px; }
+  .hero-eyebrow { font-family: 'Outfit', sans-serif; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+  .hero-headline { font-family: 'Bebas Neue', sans-serif; font-size: clamp(4rem, 8vw, 7rem); line-height: 0.93; color: var(--warm-white); margin-bottom: 1.8rem; }
+  .hero-headline .gold { color: var(--gold); }
+  .hero-sub { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.15rem; color: rgba(242,232,213,0.6); line-height: 1.7; max-width: 480px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; }
+  .project-count { font-family: 'Bebas Neue', sans-serif; font-size: 5rem; color: var(--gold); line-height: 1; }
+  .project-count-label { font-family: 'Outfit', sans-serif; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(242,232,213,0.35); text-align: right; }
+
+  /* PORTFOLIO GRID */
+  #portfolio { padding: 0; background: var(--charcoal); }
+
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 420px 420px;
+    gap: 2px;
+  }
+
+  .work-card {
+    position: relative;
+    overflow: hidden;
+    background: var(--near-black);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .work-card.featured {
+    grid-column: 1 / 3;
+    grid-row: 1 / 3;
+  }
+
+  .card-bg { position: absolute; inset: 0; transition: transform 0.6s cubic-bezier(0.22,1,0.36,1); }
+  .work-card:hover .card-bg { transform: scale(1.04); }
+
+  /* Placeholder styling */
+  .card-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; }
+  .placeholder-grid { position: absolute; inset: 0; opacity: 0.5; background-image: linear-gradient(rgba(200,150,12,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(200,150,12,0.07) 1px, transparent 1px); background-size: 40px 40px; }
+  .placeholder-icon { position: relative; z-index: 1; width: 48px; height: 48px; border: 1px solid rgba(200,150,12,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0.5; transition: opacity 0.3s; }
+  .work-card:hover .placeholder-icon { opacity: 0.9; }
+  .placeholder-label { position: relative; z-index: 1; font-family: 'Outfit', sans-serif; font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(200,150,12,0.3); transition: color 0.3s; }
+  .work-card:hover .placeholder-label { color: rgba(200,150,12,0.7); }
+
+  .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.2) 50%, transparent 100%); z-index: 2; }
+
+  .card-content { position: relative; z-index: 3; padding: 2rem; transform: translateY(8px); transition: transform 0.4s cubic-bezier(0.22,1,0.36,1); }
+  .work-card:hover .card-content { transform: translateY(0); }
+
+  .card-tag { display: inline-block; font-family: 'Outfit', sans-serif; font-size: 0.62rem; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; }
+  .card-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--warm-white); line-height: 1.2; margin-bottom: 0.5rem; }
+  .work-card.featured .card-title { font-size: 2.2rem; }
+  .card-desc { font-family: 'Outfit', sans-serif; font-size: 0.82rem; color: rgba(242,232,213,0.5); line-height: 1.6; opacity: 0; transform: translateY(6px); transition: opacity 0.3s 0.05s, transform 0.3s 0.05s; max-width: 380px; }
+  .work-card:hover .card-desc { opacity: 1; transform: translateY(0); }
+
+  .card-arrow { position: absolute; top: 1.5rem; right: 1.5rem; z-index: 3; width: 36px; height: 36px; border: 1px solid rgba(200,150,12,0.25); border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.8); transition: opacity 0.3s, transform 0.3s; color: var(--gold); }
+  .work-card:hover .card-arrow { opacity: 1; transform: scale(1); }
+
+  /* COMING SOON */
+  #coming-soon { background: var(--near-black); padding: 5rem 4rem; border-top: 1px solid rgba(200,150,12,0.08); }
+  .coming-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 4rem; flex-wrap: wrap; }
+  .coming-text { flex: 1; min-width: 280px; }
+  .coming-eyebrow { font-family: 'Outfit', sans-serif; font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; color: rgba(200,150,12,0.5); margin-bottom: 1rem; }
+  .coming-headline { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 4vw, 3.5rem); color: var(--warm-white); line-height: 1; margin-bottom: 1rem; }
+  .coming-headline .gold { color: var(--gold); }
+  .coming-body { font-family: 'Outfit', sans-serif; font-size: 0.9rem; color: rgba(242,232,213,0.5); line-height: 1.8; max-width: 440px; }
+  .coming-slots { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .slot { width: 140px; height: 90px; border: 1px dashed rgba(200,150,12,0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; transition: border-color 0.3s; }
+  .slot:hover { border-color: rgba(200,150,12,0.45); }
+  .slot-num { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: rgba(200,150,12,0.2); line-height: 1; transition: color 0.3s; }
+  .slot:hover .slot-num { color: rgba(200,150,12,0.6); }
+  .slot-label { font-family: 'Outfit', sans-serif; font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(242,232,213,0.2); }
+
+  /* CTA */
+  #cta { background: var(--charcoal); padding: 7rem 4rem; text-align: center; position: relative; overflow: hidden; }
+  #cta::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(200,150,12,0.07) 0%, transparent 65%); pointer-events: none; }
+  .cta-eyebrow { font-family: 'Outfit', sans-serif; font-size: 0.7rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+  .cta-headline { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3.5rem, 7vw, 6rem); line-height: 0.95; color: var(--warm-white); margin-bottom: 1.5rem; position: relative; z-index: 1; }
+  .cta-headline .gold { color: var(--gold); }
+  .cta-sub { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; color: rgba(242,232,213,0.5); margin-bottom: 3rem; position: relative; z-index: 1; }
+  .cta-actions { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
+  .btn-primary { display: inline-flex; align-items: center; gap: 0.6rem; background: #ffffff; color: var(--gold); font-family: 'Outfit', sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; padding: 1rem 2.2rem; text-decoration: none; border-radius: 50px; transition: background 0.2s, transform 0.2s; }
+  .btn-primary:hover { background: #f0f0f0; transform: translateY(-2px); }
+  .btn-ghost { display: inline-flex; align-items: center; gap: 0.6rem; border: 1px solid rgba(200,150,12,0.4); color: var(--warm-white); font-family: 'Outfit', sans-serif; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; padding: 1rem 2.2rem; text-decoration: none; border-radius: 50px; transition: border-color 0.2s, background 0.2s, transform 0.2s; }
+  .btn-ghost:hover { border-color: var(--gold); background: rgba(200,150,12,0.06); transform: translateY(-2px); }
+
+  /* FOOTER */
+  #footer { background: var(--near-black); border-top: 1px solid rgba(200,150,12,0.12); padding: 2rem 4rem; }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.1em; }
+  .footer-afri { color: var(--warm-white); }
+  .footer-bao  { color: var(--gold); }
+  .footer-tagline { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 0.9rem; color: rgba(242,232,213,0.4); }
+  .footer-copy { font-family: 'Outfit', sans-serif; font-size: 0.72rem; color: rgba(242,232,213,0.3); }
+  .footer-copy a { color: rgba(200,150,12,0.55); text-decoration: none; }
+  .footer-copy a:hover { color: var(--gold); }
+
+  /* REVEAL */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-d1 { transition-delay: 0.1s; }
+  .reveal-d2 { transition-delay: 0.25s; }
+  .reveal-d3 { transition-delay: 0.4s; }
+  .reveal-d4 { transition-delay: 0.55s; }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    nav { padding: 1.2rem 2rem; }
+    .nav-links { display: none; position: fixed; top: 58px; left: 0; right: 0; flex-direction: column; background: var(--charcoal); border-bottom: 1px solid rgba(200,150,12,0.12); padding: 1rem 2rem 1.5rem; gap: 0.2rem; }
+    .nav-links.open { display: flex; }
+    .nav-links a { padding: 0.6rem 0; opacity: 0.8; }
+    .nav-cta { margin-top: 0.5rem; }
+    .hamburger { display: flex; }
+    #page-hero { padding: 120px 2rem 4rem; }
+    .hero-bg-text { font-size: 14rem; }
+    .portfolio-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 320px 320px; }
+    .work-card.featured { grid-column: 1 / 3; grid-row: 1 / 2; }
+    #coming-soon, #cta { padding-left: 2rem; padding-right: 2rem; }
+    #footer { padding: 2rem 1.5rem; }
+    .footer-inner { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+  }
+
+  @media (max-width: 640px) {
+    .portfolio-grid { grid-template-columns: 1fr; grid-template-rows: repeat(5, 280px); }
+    .work-card.featured { grid-column: 1; grid-row: 1; }
+    .hero-inner { flex-direction: column; align-items: flex-start; gap: 2rem; }
+    .hero-right { align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo"><span class="afri">AFRI</span><span class="bao">BAO</span></a>
+  <div class="nav-links" id="nav-links">
+    <a href="index.html">Home</a>
+    <a href="afribao-about.html">About Us</a>
+    <a href="afribao-solutions.html">Our Solutions</a>
+    <a href="afribao-contact.html" class="nav-cta">Start Here</a>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- PAGE HERO -->
+<section id="page-hero">
+  <span class="hero-bg-text">WORK</span>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <p class="hero-eyebrow reveal reveal-d1">Our Work</p>
+      <h1 class="hero-headline reveal reveal-d2">BUILT<br>TO BE<br><span class="gold">SEEN.</span></h1>
+      <p class="hero-sub reveal reveal-d3">Every website we build is a statement. Here is what African businesses look like when they are taken seriously online.</p>
+    </div>
+    <div class="hero-right reveal reveal-d3">
+      <span class="project-count">00</span>
+      <span class="project-count-label">Projects<br>Completed</span>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO GRID -->
+<section id="portfolio">
+  <div class="portfolio-grid">
+
+    <!-- FEATURED — col 1-2, row 1-2 -->
+    <div class="work-card featured reveal reveal-d1" data-category="retail">
+      <div class="card-bg" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1505 100%);"></div>
+      <div class="card-placeholder">
+        <div class="placeholder-grid"></div>
+        <div class="placeholder-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="14" rx="1" stroke="#C8960C" stroke-width="1.2"/><path d="M7 21h10M12 17v4" stroke="#C8960C" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <span class="placeholder-label">First Project — Coming Soon</span>
+      </div>
+      <div class="card-overlay"></div>
+      <div class="card-content">
+        <span class="card-tag">Featured · Retail</span>
+        <h3 class="card-title">Your Business Here</h3>
+        <p class="card-desc">This slot is reserved for AfriBao's first completed client website — the first proof of concept of African enterprise at global standard.</p>
+      </div>
+      <div class="card-arrow">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3v6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </div>
+    </div>
+
+    <!-- CARD 2 — col 3, row 1 -->
+    <div class="work-card reveal reveal-d2" data-category="hospitality">
+      <div class="card-bg" style="background: linear-gradient(135deg, #0a0a0a 0%, #0a120a 100%);"></div>
+      <div class="card-placeholder">
+        <div class="placeholder-grid" style="background-image: linear-gradient(rgba(27,107,58,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(27,107,58,0.1) 1px, transparent 1px); background-size: 40px 40px;"></div>
+        <div class="placeholder-icon" style="border-color: rgba(27,107,58,0.3);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="14" rx="1" stroke="rgba(27,107,58,0.8)" stroke-width="1.2"/><path d="M7 21h10M12 17v4" stroke="rgba(27,107,58,0.8)" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <span class="placeholder-label" style="color: rgba(27,107,58,0.5);">Slot 2 — Available</span>
+      </div>
+      <div class="card-overlay"></div>
+      <div class="card-content">
+        <span class="card-tag" style="color: #2E7D32;">Hospitality</span>
+        <h3 class="card-title">Project Incoming</h3>
+        <p class="card-desc">A hospitality business stepping into its global presence.</p>
+      </div>
+      <div class="card-arrow">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3v6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </div>
+    </div>
+
+    <!-- CARD 3 — col 3, row 2 -->
+    <div class="work-card reveal reveal-d3" data-category="professional">
+      <div class="card-bg" style="background: linear-gradient(135deg, #0a0a0a 0%, #0e0a14 100%);"></div>
+      <div class="card-placeholder">
+        <div class="placeholder-grid" style="background-image: linear-gradient(rgba(106,27,154,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(106,27,154,0.1) 1px, transparent 1px); background-size: 40px 40px;"></div>
+        <div class="placeholder-icon" style="border-color: rgba(106,27,154,0.3);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="14" rx="1" stroke="rgba(106,27,154,0.8)" stroke-width="1.2"/><path d="M7 21h10M12 17v4" stroke="rgba(106,27,154,0.8)" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <span class="placeholder-label" style="color: rgba(106,27,154,0.5);">Slot 3 — Available</span>
+      </div>
+      <div class="card-overlay"></div>
+      <div class="card-content">
+        <span class="card-tag" style="color: #7B1FA2;">Professional Services</span>
+        <h3 class="card-title">Project Incoming</h3>
+        <p class="card-desc">A professional services firm building investment-ready credibility online.</p>
+      </div>
+      <div class="card-arrow">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3v6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- COMING SOON -->
+<section id="coming-soon">
+  <div class="coming-inner">
+    <div class="coming-text reveal reveal-d1">
+      <p class="coming-eyebrow">The Pipeline</p>
+      <h2 class="coming-headline">MORE IS<br><span class="gold">COMING.</span></h2>
+      <p class="coming-body">As projects complete, this page fills. Project by project, business by business.</p>
+    </div>
+    <div class="coming-slots reveal reveal-d2">
+      <div class="slot"><span class="slot-num">04</span><span class="slot-label">Reserved</span></div>
+      <div class="slot"><span class="slot-num">05</span><span class="slot-label">Reserved</span></div>
+      <div class="slot"><span class="slot-num">06</span><span class="slot-label">Reserved</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <p class="cta-eyebrow reveal reveal-d1">Your Business Belongs Here</p>
+  <h2 class="cta-headline reveal reveal-d2">READY TO BE<br><span class="gold">SEEN?</span></h2>
+  <p class="cta-sub reveal reveal-d3">Let's build something that represents you at your best.</p>
+  <div class="cta-actions reveal reveal-d4">
+    <a href="afribao-pricing.html" class="btn-primary">Start With Your Website</a>
+    <a href="afribao-contact.html" class="btn-ghost">Talk To Us</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="footer-inner">
+    <span class="footer-logo"><span class="footer-afri">AFRI</span><span class="footer-bao">BAO</span></span>
+    <p class="footer-tagline">The African Capability Engine</p>
+    <p class="footer-copy">&copy; 2026 AfriBao. All rights reserved. &nbsp;&middot;&nbsp; <a href="mailto:hello@afribao.com">hello@afribao.com</a> &nbsp;&middot;&nbsp; afribao.com</p>
+  </div>
+</footer>
+
+<script>
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  document.addEventListener('mousemove', e => {
+    dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px';
+    ring.style.left = e.clientX + 'px'; ring.style.top = e.clientY + 'px';
+  });
+
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('nav-links');
+  hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

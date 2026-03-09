@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Start Here — AfriBao</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C8960C;
+    --gold-pale: #E8B84B;
+    --emerald: #1B6B3A;
+    --emerald-bright: #2E9E5A;
+    --sapphire: #1565C0;
+    --amethyst: #6A1B9A;
+    --amethyst-bright: #9C4DCC;
+    --ruby: #B71C1C;
+    --charcoal: #1A1A1A;
+    --near-black: #0A0008;
+    --warm-white: #F2E8D5;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+  body {
+    background: var(--near-black);
+    color: var(--warm-white);
+    font-family: 'Outfit', sans-serif;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpolygon points='0,0 0,20 5,15 9,24 12,23 8,14 14,14' fill='%23C8960C' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E"), auto;
+    overflow-x: hidden;
+    padding-top: 76px;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem 4rem;
+    background: #1A1A1A;
+    border-bottom: 1px solid rgba(106,27,154,0.2);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem; letter-spacing: 0.1em;
+    text-decoration: none;
+  }
+  .nav-logo .afri { color: var(--warm-white); }
+  .nav-logo .bao  { color: var(--gold); }
+  .nav-links { display: flex; gap: 0.4rem; align-items: center; }
+  .nav-links a {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--warm-white); text-decoration: none;
+    padding: 0.5rem 1rem;
+    opacity: 0.7; transition: opacity 0.2s, color 0.2s;
+    cursor: inherit;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--gold); }
+  .nav-links a.active-page { color: var(--amethyst-bright); opacity: 1; }
+  .nav-cta {
+    padding: 0.55rem 1.4rem !important;
+    border: 1px solid var(--gold);
+    color: var(--gold) !important; opacity: 1 !important;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: rgba(200,150,12,0.1) !important; }
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    cursor: inherit; padding: 0.5rem;
+    background: none; border: none;
+  }
+  .hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--warm-white); transition: transform 0.3s, opacity 0.3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ── HERO ── */
+  #hero {
+    position: relative; width: 100%;
+    min-height: 55vh;
+    display: flex; align-items: center;
+    overflow: hidden;
+    background: #0A0008;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 10% 50%, rgba(106,27,154,0.22) 0%, transparent 55%),
+      radial-gradient(ellipse at 90% 20%, rgba(106,27,154,0.1) 0%, transparent 45%),
+      radial-gradient(ellipse at 60% 90%, rgba(200,150,12,0.06) 0%, transparent 50%);
+  }
+  .hero-lines {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      rgba(106,27,154,0.04) 0px,
+      rgba(106,27,154,0.04) 1px,
+      transparent 1px,
+      transparent 80px
+    );
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    padding: 3rem 4rem 4rem;
+    max-width: 1200px; width: 100%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .hero-left {}
+  .hero-eyebrow {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 0.5em; text-transform: uppercase;
+    color: var(--amethyst-bright);
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: block; width: 40px; height: 1px;
+    background: var(--amethyst-bright);
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 9vw, 8.5rem);
+    line-height: 0.88; letter-spacing: 0.01em;
+    margin-bottom: 2rem;
+  }
+  .hero-title .line-white  { color: var(--warm-white); display: block; }
+  .hero-title .line-ameth  { color: var(--amethyst-bright); display: block; }
+  .hero-title .line-gold   { color: var(--gold); display: block; }
+  .hero-intro {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+    line-height: 1.8;
+    color: rgba(242,232,213,0.65);
+    max-width: 460px;
+  }
+
+  /* Hero right — quick stats */
+  .hero-right {
+    display: flex; flex-direction: column; gap: 1.5rem;
+    padding-left: 3rem;
+    border-left: 1px solid rgba(106,27,154,0.25);
+  }
+  .stat-item {}
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem; line-height: 1;
+    color: var(--warm-white);
+    letter-spacing: 0.03em;
+  }
+  .stat-label {
+    font-size: 0.72rem; font-weight: 500;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: rgba(242,232,213,0.6);
+    margin-top: 0.2rem;
+  }
+  .stat-divider {
+    height: 1px;
+    background: rgba(106,27,154,0.2);
+  }
+
+  /* ── FORM SECTION ── */
+  #form-section {
+    background: #0A0008;
+    padding: 8rem 4rem;
+  }
+  .form-wrapper {
+    max-width: 720px; margin: 0 auto;
+  }
+  .form-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 4rem;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.35);
+  }
+  .form-card-header {
+    margin-bottom: 3rem;
+  }
+  .form-context {}
+  .section-eyebrow {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.5em; text-transform: uppercase;
+    color: var(--amethyst);
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 1.2rem;
+  }
+  .section-eyebrow::before {
+    content: ''; display: block; width: 32px; height: 1px;
+    background: var(--amethyst);
+  }
+  .form-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.8rem, 5vw, 4.8rem);
+    line-height: 0.9; color: #111111;
+    margin-bottom: 1.5rem;
+  }
+  .form-headline span { color: var(--amethyst); }
+  .form-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; line-height: 1.75;
+    color: rgba(17,17,17,0.6);
+    margin-bottom: 2.5rem;
+  }
+
+  /* What happens next list */
+  .next-steps { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+  .next-steps li {
+    display: flex; align-items: flex-start; gap: 1rem;
+    font-size: 0.82rem; line-height: 1.6;
+    color: rgba(17,17,17,0.7);
+  }
+  .next-step-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem; color: var(--amethyst);
+    flex-shrink: 0; line-height: 1.2;
+    width: 22px;
+  }
+
+  /* Right — form */
+  .contact-form { display: flex; flex-direction: column; gap: 0; }
+
+  /* Package selector */
+  .pkg-label {
+    font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.4em; text-transform: uppercase;
+    color: rgba(17,17,17,0.45);
+    margin-bottom: 0.8rem;
+    display: block;
+  }
+  .pkg-options {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2px; margin-bottom: 2rem;
+    border: 1px solid rgba(17,17,17,0.1);
+    border-radius: 3px; overflow: hidden;
+  }
+  .pkg-option { display: none; }
+  .pkg-option + label {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 0.3rem;
+    padding: 1.1rem 0.8rem;
+    cursor: pointer;
+    background: #fafafa;
+    border-right: 1px solid rgba(17,17,17,0.08);
+    transition: background 0.2s;
+    text-align: center;
+  }
+  .pkg-option + label:last-of-type { border-right: none; }
+  .pkg-option + label:hover { background: #f0f0f0; }
+  .pkg-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem; letter-spacing: 0.06em;
+    color: #111111;
+    transition: color 0.2s;
+  }
+  .pkg-price {
+    font-size: 0.62rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(17,17,17,0.4);
+    transition: color 0.2s;
+  }
+  .pkg-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    margin-top: 0.3rem;
+    background: rgba(17,17,17,0.15);
+    transition: background 0.2s;
+  }
+
+  /* Selected states */
+  .pkg-option:checked + label { background: #111111; }
+  .pkg-option:checked + label .pkg-name { color: var(--warm-white); }
+  .pkg-option:checked + label .pkg-price { color: var(--gold); }
+  .pkg-option:checked + label .pkg-dot { background: var(--gold); }
+
+  /* Form fields */
+  .field-row {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 2px; margin-bottom: 2px;
+  }
+  .field {
+    display: flex; flex-direction: column;
+    margin-bottom: 1.2rem;
+  }
+  .field-full { margin-bottom: 1.2rem; }
+  .field label, .field-full label {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.35em; text-transform: uppercase;
+    color: rgba(17,17,17,0.45);
+    padding: 0.2rem 0 0.5rem;
+    background: none;
+    border: none;
+    display: block;
+  }
+  .field input,
+  .field select,
+  .field-full input,
+  .field-full textarea,
+  .field-full select {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.88rem; color: #111111;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 6px;
+    padding: 0.85rem 1.2rem;
+    outline: none;
+    transition: background 0.2s;
+    width: 100%;
+    cursor: inherit;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  .field input:focus,
+  .field select:focus,
+  .field-full input:focus,
+  .field-full textarea:focus,
+  .field-full select:focus {
+    background: #e4e4e4;
+  }
+  .field-full textarea {
+    resize: none; height: 120px; line-height: 1.6;
+  }
+  .field select option { background: #ffffff; color: #111111; }
+
+  /* Select arrow */
+  .select-wrap { position: relative; }
+  .select-wrap::after {
+    content: '▾';
+    position: absolute; right: 1.1rem; top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.7rem; color: rgba(17,17,17,0.4);
+    pointer-events: none;
+  }
+
+  .form-spacer { height: 2rem; }
+
+  /* Submit */
+  .form-submit {
+    display: flex; align-items: center; gap: 1.5rem;
+    margin-top: 0.2rem;
+  }
+  .btn-submit {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    padding: 1.1rem 2.5rem;
+    background: #111111; color: var(--warm-white);
+    border: none; border-radius: 3px;
+    cursor: inherit;
+    transition: background 0.2s, transform 0.2s;
+    flex-shrink: 0;
+  }
+  .btn-submit:hover { background: var(--amethyst); transform: translateY(-2px); }
+  .submit-note {
+    font-size: 0.72rem; line-height: 1.6;
+    color: rgba(17,17,17,0.4);
+  }
+
+  /* ── WHY AFRIBAO SECTION ── */
+  #why {
+    background: #0D0D0D;
+    padding: 8rem 4rem;
+  }
+  .why-inner { max-width: 1200px; margin: 0 auto; }
+  .why-header { margin-bottom: 4rem; }
+  .why-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    line-height: 0.9; color: var(--warm-white);
+    margin-bottom: 0.8rem;
+  }
+  .why-headline span { color: var(--amethyst-bright); }
+  .why-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; line-height: 1.7;
+    color: rgba(242,232,213,0.5);
+    max-width: 500px;
+  }
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+  .why-card {
+    padding: 2.5rem 2rem;
+    background: #111111;
+    border-top: 2px solid transparent;
+    transition: border-color 0.3s;
+  }
+  .why-card:hover { border-color: var(--amethyst-bright); }
+  .why-icon {
+    font-size: 1.6rem; margin-bottom: 1.2rem;
+    display: block;
+  }
+  .why-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--warm-white);
+    margin-bottom: 0.7rem;
+  }
+  .why-desc {
+    font-size: 0.8rem; line-height: 1.7;
+    color: rgba(242,232,213,0.45);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #111111;
+    border-top: 1px solid rgba(200,150,12,0.12);
+    padding: 2.5rem 4rem;
+  }
+  .footer-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem; letter-spacing: 0.1em;
+    text-decoration: none;
+  }
+  .footer-afri { color: var(--warm-white); }
+  .footer-bao  { color: var(--gold); }
+  .footer-tagline {
+    font-size: 0.68rem; letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba(242,232,213,0.35);
+  }
+  .footer-copy {
+    font-size: 0.68rem; color: rgba(242,232,213,0.3);
+    letter-spacing: 0.05em;
+  }
+  .footer-copy a { color: rgba(242,232,213,0.4); text-decoration: none; }
+
+  /* ── REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+  .reveal-d1 { transition-delay: 0.1s; }
+  .reveal-d2 { transition-delay: 0.2s; }
+  .reveal-d3 { transition-delay: 0.3s; }
+
+  /* Placeholder colour — light purple */
+  ::placeholder { color: rgba(106,27,154,0.4); opacity: 1; }
+  ::-webkit-input-placeholder { color: rgba(106,27,154,0.4); }
+  ::-moz-placeholder { color: rgba(106,27,154,0.4); }
+
+  /* ── CATEGORY COLOURS — set as base backgrounds above ── */
+
+  /* ── INTERESTED IN ── */
+  .interested-label {
+    display: block;
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.35em; text-transform: uppercase;
+    color: rgba(17,17,17,0.45);
+    padding: 0.2rem 0 0.5rem;
+    background: none;
+    margin-bottom: 0;
+  }
+  .interested-sub {
+    font-size: 0.7rem; color: rgba(17,17,17,0.4);
+    letter-spacing: 0.05em;
+    background: none;
+    padding: 0;
+    margin-bottom: 0.8rem;
+  }
+  .interest-item {
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    background: #f0f0f0;
+  }
+
+  /* Category dark backgrounds + coloured borders */
+  #item-website  { background: #1A1400; border: 1.5px solid var(--gold); }
+  #item-systems  { background: #050D1F; border: 1.5px solid var(--sapphire); }
+  #item-strategy { background: #1A0404; border: 1.5px solid var(--ruby); }
+  #item-startup  { background: #051209; border: 1.5px solid var(--emerald); }
+  /* Remove shared border-bottom since items have own borders */
+  .interest-item { border-bottom: none !important; }
+  /* Gap between items */
+  .interest-item + .interest-item { margin-top: 6px; }
+  /* All items rounded */
+  .interest-item { border-radius: 6px !important; }
+  .interest-check-label {
+    display: flex; align-items: center; gap: 2rem;
+    padding: 1rem 1.4rem 1rem 1.8rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .interest-check-label input[type="checkbox"] { display: none; }
+  .check-box {
+    width: 18px; height: 18px; flex-shrink: 0;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+  }
+  #item-website  .check-box { border-color: var(--gold); }
+  #item-systems  .check-box { border-color: var(--sapphire); }
+  #item-strategy .check-box { border-color: var(--ruby); }
+  #item-startup  .check-box { border-color: var(--emerald); }
+  .check-box::after {
+    content: '';
+    width: 5px; height: 9px;
+    border-right: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    transform: rotate(45deg) scale(0) translateY(-1px);
+    transition: transform 0.15s;
+    position: absolute;
+  }
+  #item-website  .interest-check-label:has(input:checked) .check-box  { background: var(--gold);     border-color: var(--gold); }
+  #item-systems  .interest-check-label:has(input:checked) .check-box  { background: var(--sapphire); border-color: var(--sapphire); }
+  #item-strategy .interest-check-label:has(input:checked) .check-box  { background: var(--ruby);     border-color: var(--ruby); }
+  #item-startup  .interest-check-label:has(input:checked) .check-box  { background: var(--emerald);  border-color: var(--emerald); }
+  .interest-check-label:has(input:checked) .check-box::after {
+    transform: rotate(45deg) scale(1) translateY(-1px);
+    border-color: #ffffff;
+  }
+  .check-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem; font-weight: 700;
+    letter-spacing: 0.05em;
+    color: rgba(242,232,213,0.9);
+    transition: color 0.2s;
+    flex: 1;
+  }
+  #item-website  .check-title { color: rgba(200,150,12,0.9); }
+  #item-systems  .check-title { color: rgba(91,155,245,0.9); }
+  #item-strategy .check-title { color: rgba(229,115,115,0.9); }
+  #item-startup  .check-title { color: rgba(46,158,90,0.9); }
+  /* Brighten on checked */
+  #item-website  .interest-check-label:has(input:checked) .check-title { color: var(--gold-pale); }
+  #item-systems  .interest-check-label:has(input:checked) .check-title { color: #7EB8FF; }
+  #item-strategy .interest-check-label:has(input:checked) .check-title { color: #FF8A80; }
+  #item-startup  .interest-check-label:has(input:checked) .check-title { color: var(--emerald-bright); }
+  .check-desc {
+    font-size: 0.75rem; color: rgba(255,255,255,0.65); line-height: 1.4;
+  }
+  .check-arrow {
+    font-size: 1.2rem; color: rgba(255,255,255,0.4);
+    transition: transform 0.3s, color 0.2s;
+    flex-shrink: 0;
+  }
+  #item-website:has(#chk-website:checked) .check-arrow {
+    transform: rotate(90deg);
+    color: rgba(255,255,255,0.8);
+  }
+
+  /* Tier expansion */
+  .tier-expand {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s;
+    padding: 0 1.2rem 0 1.2rem;
+  }
+  .tier-expand.open {
+    max-height: 200px;
+    padding: 0.2rem 1.4rem 1.4rem;
+  }
+  .tier-expand-label {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.35em; text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 0.7rem;
+  }
+  .tier-options { display: flex; flex-direction: column; gap: 2px; }
+  .tier-opt { display: block; cursor: pointer; }
+  .tier-opt input { display: none; }
+  .tier-box {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.7rem 1rem;
+    border: 1px solid rgba(17,17,17,0.1);
+    border-radius: 2px;
+    background: #fafafa;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .tier-opt:hover .tier-box { background: #f0f0f0; }
+  .tier-opt:has(input:checked) .tier-box {
+    background: #111111;
+    border-color: #111111;
+  }
+  .tier-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem; letter-spacing: 0.05em;
+    color: #111111;
+    transition: color 0.2s;
+  }
+  .tier-opt:has(input:checked) .tier-name { color: var(--warm-white); }
+  .tier-price {
+    font-size: 0.68rem; font-weight: 600;
+    letter-spacing: 0.08em; color: rgba(17,17,17,0.4);
+    transition: color 0.2s;
+  }
+  .tier-opt:has(input:checked) .tier-price { color: var(--gold); }
+
+  /* ── INTERESTED IN ── */
+  .form-success {
+    display: none;
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+  .form-success.visible { display: block; }
+  .success-icon { font-size: 3rem; margin-bottom: 1.5rem; display: block; }
+  .success-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem; color: var(--amethyst);
+    margin-bottom: 0.8rem;
+  }
+  .success-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; line-height: 1.7;
+    color: rgba(17,17,17,0.6);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    nav { padding: 1.2rem 2rem; }
+    .hero-content { grid-template-columns: 1fr; gap: 3rem; padding: 2rem 2rem 3rem; }
+    .hero-right { border-left: none; border-top: 1px solid rgba(106,27,154,0.2); padding-left: 0; padding-top: 2rem; flex-direction: row; gap: 3rem; }
+    .stat-divider { display: none; }
+    #form-section { padding: 6rem 2rem; }
+    .form-card { padding: 3rem 2.5rem; }
+    .why-grid { grid-template-columns: repeat(2, 1fr); }
+    #why { padding: 6rem 2rem; }
+    footer { padding: 2rem; }
+  }
+  @media (max-width: 600px) {
+    nav { padding: 1rem 1.5rem; }
+    .hamburger { display: flex; }
+    .nav-links {
+      display: none; position: fixed;
+      top: 60px; left: 0; right: 0;
+      background: #1A1A1A;
+      flex-direction: column; align-items: flex-start;
+      padding: 1.5rem; gap: 0;
+      border-top: 1px solid rgba(200,150,12,0.15);
+      z-index: 99;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a { width: 100%; padding: 0.9rem 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.8rem; }
+    .nav-cta { margin-top: 0.5rem; border-bottom: none !important; }
+    .field-row { grid-template-columns: 1fr; }
+    .pkg-options { grid-template-columns: 1fr; }
+    .pkg-option + label { flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 1rem 1.2rem; border-right: none; border-bottom: 1px solid rgba(17,17,17,0.08); }
+    .pkg-option + label:last-of-type { border-bottom: none; }
+    .why-grid { grid-template-columns: 1fr; }
+    .hero-right { flex-direction: column; gap: 1.2rem; }
+    #form-section { padding: 4rem 1.5rem; }
+    .form-card { padding: 2rem 1.5rem; border-radius: 12px; }
+    .form-headline { font-size: clamp(2.5rem, 10vw, 4rem); }
+    .footer-inner { flex-direction: column; gap: 0.5rem; }
+    .form-submit { flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (hover: none) {
+    body { cursor: auto; }
+    a, button, label, input, select, textarea { cursor: pointer; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo"><span class="afri">AFRI</span><span class="bao">BAO</span></a>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="afribao-about.html">About Us</a>
+    <a href="afribao-solutions.html">Our Solutions</a>
+    <a href="afribao-contact.html" class="nav-cta active-page">Start Here</a>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-content">
+    <div class="hero-left">
+      <p class="hero-eyebrow reveal">Let's Begin</p>
+      <h1 class="hero-title reveal reveal-d1">
+        <span class="line-white">Your</span>
+        <span class="line-ameth">Business.</span>
+        <span class="line-white">Built For Greatness.</span>
+      </h1>
+      <p class="hero-intro reveal reveal-d2">Tell us where you are and where you want to go.</p>
+    </div>
+    <div class="hero-right reveal reveal-d2">
+      <div class="stat-item">
+        <p class="stat-num">24H</p>
+        <p class="stat-label">Response Time</p>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <p class="stat-num">6</p>
+        <p class="stat-label">Step Process</p>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <p class="stat-num">100%</p>
+        <p class="stat-label">African-Built</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORM SECTION -->
+<section id="form-section">
+  <div class="form-wrapper">
+
+    <div class="form-card reveal">
+
+      <div class="form-card-header">
+        <p class="section-eyebrow">Get Started</p>
+        <h2 class="form-headline">Tell Us<br><span>About Your</span><br>Business.</h2>
+        <p class="form-desc">Complete this form and we'll be in touch within 24 hours.</p>
+      </div>
+
+      <div class="contact-form" id="contactForm">
+
+        <!-- First Name -->
+        <div class="field-full">
+          <label for="fname">First Name</label>
+          <input type="text" id="fname" name="first_name" placeholder="Your first name" autocomplete="given-name">
+        </div>
+
+        <!-- Last Name -->
+        <div class="field-full">
+          <label for="lname">Last Name</label>
+          <input type="text" id="lname" name="last_name" placeholder="Your last name" autocomplete="family-name">
+        </div>
+
+        <!-- Business Name -->
+        <div class="field-full">
+          <label for="business">Business Name</label>
+          <input type="text" id="business" name="business_name" placeholder="Your business name">
+        </div>
+
+        <!-- Industry -->
+        <div class="field-full">
+          <label for="industry">Industry</label>
+          <div class="select-wrap">
+            <select id="industry" name="industry">
+              <option value="" disabled selected>Select your industry</option>
+              <option>Retail</option>
+              <option>Professional Services</option>
+              <option>Healthcare</option>
+              <option>Hospitality &amp; Tourism</option>
+              <option>Technology</option>
+              <option>Construction &amp; Property</option>
+              <option>Education &amp; Training</option>
+              <option>Finance &amp; Accounting</option>
+              <option>Media &amp; Creative</option>
+              <option>Manufacturing</option>
+              <option>Food &amp; Beverage</option>
+              <option>Logistics &amp; Transport</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Business Age -->
+        <div class="field-full">
+          <label for="biz_age">Business Age</label>
+          <div class="select-wrap">
+            <select id="biz_age" name="business_age">
+              <option value="" disabled selected>How long has your business been operating?</option>
+              <option>Pre-launch — not yet trading</option>
+              <option>Less than 1 year</option>
+              <option>1 – 2 years</option>
+              <option>3 – 5 years</option>
+              <option>6 – 10 years</option>
+              <option>10+ years</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Current Website -->
+        <div class="field-full">
+          <label for="current_site">Current Website (if any)</label>
+          <input type="url" id="current_site" name="current_website" placeholder="www.yourbusiness.com — leave blank if none">
+        </div>
+
+        <!-- Interested In -->
+        <div class="field-full">
+          <span class="interested-label">Interested In</span>
+          <p class="interested-sub">Select all that apply</p>
+
+          <!-- Website Development -->
+          <div class="interest-item" id="item-website">
+            <label class="interest-check-label" for="chk-website">
+              <input type="checkbox" id="chk-website" name="interest_website" value="Website Development">
+              <span class="check-box"></span>
+              <span class="check-title">Website Development</span>
+            </label>
+            <!-- Expandable tier selector -->
+            <div class="tier-expand" id="tier-expand">
+              <p class="tier-expand-label">Select a tier</p>
+              <div class="tier-options">
+                <label class="tier-opt">
+                  <input type="radio" name="website_tier" value="Starter (R2 500 – R4 900)">
+                  <span class="tier-box">
+                    <span class="tier-name">Starter</span>
+                    <span class="tier-price">R2 500 – R4 900</span>
+                  </span>
+                </label>
+                <label class="tier-opt">
+                  <input type="radio" name="website_tier" value="Business (R5 900 – R9 900)">
+                  <span class="tier-box">
+                    <span class="tier-name">Business</span>
+                    <span class="tier-price">R5 900 – R9 900</span>
+                  </span>
+                </label>
+                <label class="tier-opt">
+                  <input type="radio" name="website_tier" value="Advanced / E-Commerce (from R15 000)">
+                  <span class="tier-box">
+                    <span class="tier-name">Advanced</span>
+                    <span class="tier-price">From R15 000</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Systems Implementation -->
+          <div class="interest-item" id="item-systems">
+            <label class="interest-check-label" for="chk-systems">
+              <input type="checkbox" id="chk-systems" name="interest_systems" value="Systems Implementation">
+              <span class="check-box"></span>
+              <span class="check-title">Systems Implementation</span>
+            </label>
+          </div>
+
+          <!-- Strategy Workshop -->
+          <div class="interest-item" id="item-strategy">
+            <label class="interest-check-label" for="chk-strategy">
+              <input type="checkbox" id="chk-strategy" name="interest_strategy" value="Strategy Workshop">
+              <span class="check-box"></span>
+              <span class="check-title">Strategy Workshop</span>
+            </label>
+          </div>
+
+          <!-- Startup Support -->
+          <div class="interest-item" id="item-startup" style="border-bottom:none;">
+            <label class="interest-check-label" for="chk-startup">
+              <input type="checkbox" id="chk-startup" name="interest_startup" value="Startup Support">
+              <span class="check-box"></span>
+              <span class="check-title">Startup Support</span>
+            </label>
+          </div>
+
+        </div>
+
+        <div class="form-spacer"></div>
+
+        <div class="form-submit">
+          <button type="button" class="btn-submit" id="submitBtn">Submit Request →</button>
+          <p class="submit-note">We'll respond within 24 hours.<br>No commitment required.</p>
+        </div>
+
+      </div>
+
+      <!-- Success state -->
+      <div class="form-success" id="formSuccess">
+        <span class="success-icon">✦</span>
+        <p class="success-title">Request Received.</p>
+        <p class="success-desc">Thank you for reaching out. We'll review your submission and be in touch within 24 hours to take the next step together.</p>
+      </div>
+
+    </div><!-- /.form-card -->
+  </div><!-- /.form-wrapper -->
+</section>
+
+<!-- WHY AFRIBAO -->
+<section id="why">
+  <div class="why-inner">
+    <div class="why-header reveal">
+      <p class="section-eyebrow" style="color: var(--amethyst-bright);">Why AfriBao</p>
+      <h2 class="why-headline">Built for <span>African</span> Business.</h2>
+      <p class="why-sub">We understand the context, the constraints, and the opportunity — because we operate in the same landscape you do.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <span class="why-icon">◈</span>
+        <p class="why-title">Contextual Understanding</p>
+        <p class="why-desc">We don't apply foreign frameworks to African challenges. Every solution is built for this market.</p>
+      </div>
+      <div class="why-card reveal reveal-d1">
+        <span class="why-icon">◈</span>
+        <p class="why-title">Global Standard</p>
+        <p class="why-desc">Your website will compete with any business, anywhere. We hold ourselves — and your brand — to that standard.</p>
+      </div>
+      <div class="why-card reveal reveal-d2">
+        <span class="why-icon">◈</span>
+        <p class="why-title">Structured Process</p>
+        <p class="why-desc">No guesswork. A clear six-step process from brief to launch, with you informed at every stage.</p>
+      </div>
+      <div class="why-card reveal reveal-d3">
+        <span class="why-icon">◈</span>
+        <p class="why-title">Beyond the Website</p>
+        <p class="why-desc">Your website is Phase 1. We're thinking about your business in Year 3 — and building with that in mind.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <a href="index.html" class="footer-logo">
+      <span class="footer-afri">AFRI</span><span class="footer-bao">BAO</span>
+    </a>
+    <p class="footer-tagline">The African Capability Engine</p>
+    <p class="footer-copy">&copy; 2026 AfriBao. All rights reserved. &nbsp;&middot;&nbsp; <a href="mailto:hello@afribao.com">hello@afribao.com</a> &nbsp;&middot;&nbsp; afribao.com</p>
+  </div>
+</footer>
+
+<script>
+// ── HAMBURGER ──
+const hamburger = document.getElementById('hamburger');
+const navLinks   = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  navLinks.classList.toggle('open');
+});
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  hamburger.classList.remove('open');
+  navLinks.classList.remove('open');
+}));
+
+// ── SCROLL REVEAL ──
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+// ── WEBSITE TIER EXPAND ──
+const chkWebsite = document.getElementById('chk-website');
+const tierExpand = document.getElementById('tier-expand');
+chkWebsite.addEventListener('change', () => {
+  tierExpand.classList.toggle('open', chkWebsite.checked);
+});
+
+// ── FORM SUBMIT ──
+document.getElementById('submitBtn').addEventListener('click', () => {
+  const fname    = document.getElementById('fname').value.trim();
+  const business = document.getElementById('business').value.trim();
+
+  if (!fname || !business) {
+    [{ id: 'fname', val: fname }, { id: 'business', val: business }].forEach(f => {
+      const el = document.getElementById(f.id);
+      if (!f.val) {
+        el.style.borderColor = 'rgba(183,28,28,0.4)';
+        el.style.background  = 'rgba(183,28,28,0.04)';
+        el.addEventListener('input', () => { el.style.borderColor = ''; el.style.background = ''; }, { once: true });
+      }
+    });
+    return;
+  }
+
+  const lname    = document.getElementById('lname').value.trim();
+  const industry = document.getElementById('industry').value;
+  const biz_age  = document.getElementById('biz_age').value;
+  const site     = document.getElementById('current_site').value.trim();
+
+  const interests = [];
+  if (document.getElementById('chk-website').checked) {
+    const tier = document.querySelector('input[name="website_tier"]:checked')?.value || 'Tier not selected';
+    interests.push(`Website Development — ${tier}`);
+  }
+  if (document.getElementById('chk-systems').checked)  interests.push('Systems Implementation');
+  if (document.getElementById('chk-strategy').checked) interests.push('Strategy Workshop');
+  if (document.getElementById('chk-startup').checked)  interests.push('Startup Support');
+
+  const subject = encodeURIComponent(`AfriBao Enquiry — ${business}`);
+  const body = encodeURIComponent(
+    `Name: ${fname} ${lname}\n\nBusiness: ${business}\nIndustry: ${industry}\nBusiness Age: ${biz_age}\nCurrent Website: ${site || 'None'}\n\nInterested In:\n${interests.length ? interests.map(i => `  • ${i}`).join('\n') : '  Not specified'}`
+  );
+
+  window.location.href = `mailto:hello@afribao.com?subject=${subject}&body=${body}`;
+
+  document.getElementById('contactForm').style.display = 'none';
+  const success = document.getElementById('formSuccess');
+  success.classList.add('visible');
+  success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+
+// ── PRE-SELECT PACKAGE FROM URL PARAM ──
+const params = new URLSearchParams(window.location.search);
+const pkg = params.get('pkg');
+if (pkg) {
+  const map = { starter: 'pkg-starter', business: 'pkg-business', advanced: 'pkg-advanced' };
+  const id = map[pkg.toLowerCase()];
+  if (id) document.getElementById(id).checked = true;
+}
+</script>
+</body>
+</html>

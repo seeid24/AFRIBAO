@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AfriBao — The African Capability Engine</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C8960C;
+    --gold-pale: #E8B84B;
+    --emerald: #1B6B3A;
+    --sapphire: #1565C0;
+    --amethyst: #6A1B9A;
+    --ruby: #B71C1C;
+    --charcoal: #1A1A1A;
+    --near-black: #0D0D0D;
+    --dark-mid: #141414;
+    --warm-white: #F2E8D5;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--charcoal);
+    color: var(--warm-white);
+    font-family: 'Outfit', sans-serif;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpolygon points='0,0 0,20 5,15 9,24 12,23 8,14 14,14' fill='%23C8960C' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E"), auto;
+    overflow-x: hidden;
+  }
+
+  /* CURSOR */
+  #cursor-dot {
+    position: fixed; width: 8px; height: 8px;
+    background: var(--gold); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    mix-blend-mode: screen;
+  }
+  #cursor-ring {
+    position: fixed; width: 36px; height: 36px;
+    border: 1.5px solid rgba(200,150,12,0.45);
+    border-radius: 50%; pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: left 0.15s ease, top 0.15s ease;
+    mix-blend-mode: screen;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem 4rem;
+    background: #1A1A1A;
+    border-bottom: 1px solid rgba(200,150,12,0.12);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem; letter-spacing: 0.1em;
+    text-decoration: none;
+  }
+  .nav-logo .afri { color: var(--warm-white); }
+  .nav-logo .bao  { color: var(--gold); }
+  .nav-links { display: flex; gap: 0.4rem; align-items: center; }
+  .nav-links a {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--warm-white); text-decoration: none;
+    padding: 0.5rem 1rem;
+    opacity: 0.7; transition: opacity 0.2s, color 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--gold); }
+  .nav-links a.active-page { color: var(--gold); opacity: 1; }
+  .nav-cta {
+    padding: 0.55rem 1.4rem !important;
+    border: 1px solid var(--gold);
+    color: var(--gold) !important; opacity: 1 !important;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: rgba(200,150,12,0.1) !important; }
+
+  /* HERO */
+  #hero {
+    background: #080808;
+    position: relative; width: 100%; height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  #baobab-canvas {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    opacity: 0.4;
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    text-align: center; padding: 0 2rem;
+    display: flex; flex-direction: column; align-items: center; gap: 1.2rem;
+  }
+  .hero-eyebrow {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.88rem; font-weight: 700;
+    letter-spacing: 0.5em; text-transform: uppercase;
+    color: #ffffff;
+    opacity: 0; animation: fadeUp 1s 0.5s forwards;
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 12vw, 11rem);
+    line-height: 0.9; letter-spacing: 0.04em;
+    opacity: 0; animation: fadeUp 1s 0.8s forwards;
+  }
+  .hero-title .afri { color: var(--warm-white); }
+  .hero-title .bao  { color: var(--gold); }
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: clamp(1rem, 2vw, 1.3rem);
+    color: rgba(242,232,213,0.68); max-width: 500px;
+    opacity: 0; animation: fadeUp 1s 1.1s forwards;
+  }
+  .hero-buttons {
+    display: flex; gap: 1rem; margin-top: 0.5rem;
+    opacity: 0; animation: fadeUp 1s 1.4s forwards;
+  }
+  .btn-primary {
+    padding: 0.85rem 2rem;
+    background: #ffffff; color: var(--charcoal);
+    font-family: 'Outfit', sans-serif; font-weight: 700;
+    font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase;
+    text-decoration: none; cursor: inherit;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .btn-primary:hover { background: rgba(255,255,255,0.88); transform: translateY(-2px); }
+  .btn-ghost {
+    padding: 0.85rem 2rem;
+    border: 1px solid var(--gold); color: var(--warm-white);
+    font-family: 'Outfit', sans-serif; font-weight: 500;
+    font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase;
+    text-decoration: none; cursor: inherit;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .btn-ghost:hover { background: rgba(200,150,12,0.08); transform: translateY(-2px); }
+  .scroll-indicator {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    opacity: 0; animation: fadeUp 1s 2s forwards;
+  }
+  .scroll-line { width: 1px; height: 48px; background: var(--gold); animation: scrollPulse 2s ease-in-out infinite; }
+  .scroll-text { font-size: 0.62rem; letter-spacing: 0.35em; text-transform: uppercase; color: rgba(200,150,12,0.55); }
+
+  /* PITCH PANEL */
+  #pitch {
+    background: #111111;
+    padding: 8rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .pitch-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6rem;
+    align-items: center;
+    max-width: 1200px; margin: 0 auto;
+    position: relative; z-index: 1;
+  }
+  #pitch::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(200,150,12,0.018) 60px, rgba(200,150,12,0.018) 61px),
+      repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(200,150,12,0.018) 60px, rgba(200,150,12,0.018) 61px);
+    pointer-events: none;
+  }
+  .pitch-left { position: relative; z-index: 1; }
+  .section-eyebrow {
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.4em;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 1.5rem; display: block;
+  }
+  .pitch-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.4rem, 3.8vw, 3.6rem);
+    line-height: 1; color: var(--warm-white); margin-bottom: 1.5rem;
+  }
+  .pitch-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 1.12rem;
+    color: var(--gold); margin-bottom: 2rem;
+  }
+  .pitch-body {
+    font-size: 0.93rem; line-height: 1.85;
+    color: rgba(242,232,213,0.72); margin-bottom: 1.2rem;
+  }
+  .pitch-right { position: relative; z-index: 1; }
+  .mockup-frame {
+    background: #0A0A0A;
+    border: 1px solid rgba(200,150,12,0.18);
+    padding: 1rem; aspect-ratio: 16/10;
+    position: relative; overflow: hidden;
+  }
+  .mockup-frame::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, rgba(200,150,12,0.05) 0%, transparent 70%);
+  }
+  .mockup-inner { width: 100%; height: 100%; display: flex; flex-direction: column; gap: 0.4rem; }
+  .mock-nav { height: 7%; background: rgba(200,150,12,0.12); border-radius: 1px; }
+  .mock-hero {
+    height: 38%; background: rgba(200,150,12,0.05); border-radius: 1px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mock-hero-text { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; color: rgba(200,150,12,0.3); letter-spacing: 0.15em; }
+  .mock-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.3rem; height: 30%; }
+  .mock-card:nth-child(1) { background: rgba(200,150,12,0.06); border: 1px solid rgba(200,150,12,0.1); border-radius:1px; }
+  .mock-card:nth-child(2) { background: rgba(27,107,58,0.05);  border: 1px solid rgba(27,107,58,0.1);  border-radius:1px; }
+  .mock-card:nth-child(3) { background: rgba(106,27,154,0.05); border: 1px solid rgba(106,27,154,0.1); border-radius:1px; }
+  .mockup-caption { font-size: 0.68rem; color: rgba(242,232,213,0.28); letter-spacing: 0.12em; text-align: center; text-transform: uppercase; margin-top: 0.8rem; }
+
+  /* MANIFESTO */
+  #manifesto {
+    background: var(--charcoal);
+    padding: 9rem 4rem;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .manifesto-ghost {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20vw; color: rgba(200,150,12,0.028);
+    white-space: nowrap; pointer-events: none; user-select: none; letter-spacing: 0.1em;
+  }
+  .manifesto-line1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.8rem, 4vw, 3.8rem); color: var(--warm-white); margin-bottom: 0.3rem; position: relative; z-index: 1; }
+  .manifesto-line2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.8rem, 4vw, 3.8rem); color: var(--gold); margin-bottom: 3rem; position: relative; z-index: 1; }
+  .manifesto-body { max-width: 600px; margin: 0 auto 1.4rem; font-size: 0.96rem; line-height: 1.9; color: rgba(242,232,213,0.7); position: relative; z-index: 1; }
+  .manifesto-closing { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.25rem; color: var(--gold); margin-top: 2.5rem; position: relative; z-index: 1; }
+
+  /* SOLUTIONS */
+  #solutions-preview { background: var(--dark-mid); padding: 7rem 4rem; }
+  .section-header { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; margin-bottom: 4rem; }
+  .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.8rem, 5vw, 4.8rem); color: var(--warm-white); line-height: 0.95; }
+  .section-desc { font-size: 0.9rem; line-height: 1.85; color: rgba(242,232,213,0.6); padding-bottom: 0.5rem; }
+  .solutions-grid { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid rgba(200,150,12,0.1); }
+  .sol-card {
+    padding: 2.5rem 2rem; border-right: 1px solid rgba(200,150,12,0.1);
+    position: relative; overflow: hidden;
+    transition: transform 0.3s, background 0.3s;
+    text-decoration: none; display: block; cursor: inherit;
+  }
+  .sol-card:last-child { border-right: none; }
+  .sol-card:hover { transform: translateY(-4px); background: #1A1A1A; }
+  .sol-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
+  .sol-card:hover::after { transform: scaleX(1); }
+  .sol-card[data-color="gold"]::after     { background: var(--gold); }
+  .sol-card[data-color="ruby"]::after     { background: var(--ruby); }
+  .sol-card[data-color="amethyst"]::after { background: var(--amethyst); }
+  .sol-card[data-color="emerald"]::after  { background: var(--emerald); }
+  .sol-num { font-family: 'Bebas Neue', sans-serif; font-size: 5rem; line-height: 1; position: absolute; top: 0.8rem; right: 1.2rem; opacity: 0.08; pointer-events: none; }
+  .sol-card[data-color="gold"] .sol-num     { color: var(--gold); }
+  .sol-card[data-color="ruby"] .sol-num     { color: var(--ruby); }
+  .sol-card[data-color="amethyst"] .sol-num { color: var(--amethyst); }
+  .sol-card[data-color="emerald"] .sol-num  { color: var(--emerald); }
+  .sol-label { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase; margin-bottom: 1.2rem; display: block; }
+  .sol-card[data-color="gold"] .sol-label     { color: var(--gold); }
+  .sol-card[data-color="ruby"] .sol-label     { color: var(--ruby); }
+  .sol-card[data-color="amethyst"] .sol-label { color: var(--amethyst); }
+  .sol-card[data-color="emerald"] .sol-label  { color: var(--emerald); }
+  .sol-title { font-family: 'Cormorant Garamond', serif; font-size: 1.28rem; font-weight: 600; color: var(--warm-white); margin-bottom: 1rem; line-height: 1.3; }
+  .sol-desc { font-size: 0.84rem; line-height: 1.72; color: rgba(242,232,213,0.52); }
+  .sol-arrow { margin-top: 2rem; font-size: 1.1rem; opacity: 0; transform: translateX(-8px); transition: opacity 0.3s, transform 0.3s; }
+  .sol-card[data-color="gold"] .sol-arrow     { color: var(--gold); }
+  .sol-card[data-color="ruby"] .sol-arrow     { color: var(--ruby); }
+  .sol-card[data-color="amethyst"] .sol-arrow { color: var(--amethyst); }
+  .sol-card[data-color="emerald"] .sol-arrow  { color: var(--emerald); }
+  .sol-card:hover .sol-arrow { opacity: 1; transform: translateX(0); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes scrollPulse { 0%,100% { transform: scaleY(1); opacity: 1; } 50% { transform: scaleY(0.5); opacity: 0.35; } }
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-d1 { transition-delay: 0.1s; }
+  .reveal-d2 { transition-delay: 0.2s; }
+  .reveal-d3 { transition-delay: 0.3s; }
+  .reveal-d4 { transition-delay: 0.4s; }
+
+  /* ── CONTACT ── */
+  #contact {
+    background: #0E0E0E;
+    padding: 9rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  #contact::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 60%, rgba(200,150,12,0.07) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .contact-inner { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+  .contact-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 10vw, 8rem);
+    line-height: 0.95;
+    color: var(--warm-white);
+    margin: 1.5rem 0 0;
+    letter-spacing: 0.02em;
+  }
+  .contact-gold { color: var(--gold); }
+  .contact-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--gold);
+    margin: 1.8rem 0 2.8rem;
+  }
+  .contact-actions { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; }
+  .btn-ghost {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    border: 1px solid var(--gold);
+    color: var(--warm-white);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: inherit;
+    transition: background 0.25s, color 0.25s;
+  }
+  .btn-ghost:hover { background: rgba(200,150,12,0.08); color: var(--gold); }
+
+  /* ── FOOTER ── */
+  #footer {
+    background: #0A0A0A;
+    border-top: 1px solid rgba(200,150,12,0.18);
+    padding: 2.5rem 4rem;
+  }
+  .footer-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem; letter-spacing: 0.12em;
+  }
+  .footer-afri { color: var(--warm-white); }
+  .footer-bao  { color: var(--gold); }
+  .footer-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: rgba(242,232,213,0.45);
+  }
+  .footer-copy {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    color: rgba(242,232,213,0.3);
+  }
+  .footer-copy a { color: rgba(200,150,12,0.55); text-decoration: none; }
+  .footer-copy a:hover { color: var(--gold); }
+
+  /* ── HAMBURGER MENU ── */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: inherit;
+    padding: 0.5rem;
+    background: none;
+    border: none;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--warm-white);
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  @media (max-width: 600px) {
+    nav { padding: 1rem 1.5rem; }
+    .hamburger { display: flex; }
+    .nav-links {
+      display: none;
+      position: fixed;
+      top: 60px; left: 0; right: 0;
+      background: #1A1A1A;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 1.5rem;
+      gap: 0;
+      border-top: 1px solid rgba(200,150,12,0.15);
+      z-index: 99;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links { top: 58px; }
+    .nav-links a {
+      width: 100%;
+      padding: 0.9rem 0.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.8rem;
+    }
+    .nav-cta {
+      margin-top: 0.5rem;
+      border-bottom: none !important;
+    }
+  }
+
+  @media (max-width: 768px) {
+    body { padding-top: 0; }
+    #hero { height: auto; min-height: 100svh; }
+    .hero-content { padding: 6rem 1.5rem 3rem; text-align: center; }
+    .hero-eyebrow { justify-content: center; font-size: 0.65rem; letter-spacing: 0.35em; }
+    .hero-title { font-size: clamp(3.5rem, 14vw, 6rem); }
+    .hero-subtitle { font-size: 0.95rem; }
+    .hero-buttons { flex-direction: column; align-items: center; gap: 0.8rem; }
+    .btn-primary, .btn-ghost { width: 100%; max-width: 280px; text-align: center; }
+    #pitch { padding: 5rem 1.5rem; }
+    .pitch-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .section-header { grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 2.5rem; }
+    #manifesto { padding: 5rem 1.5rem; }
+    .manifesto-line1, .manifesto-line2 { font-size: clamp(2rem, 10vw, 3.5rem); }
+    #solutions-preview { padding: 5rem 1.5rem; }
+    .solutions-grid { grid-template-columns: 1fr; }
+    .section-title { font-size: clamp(2.5rem, 10vw, 4rem); }
+    #contact { padding: 5rem 1.5rem; }
+    .contact-headline { font-size: clamp(3rem, 14vw, 6rem); }
+    .contact-actions { flex-direction: column; align-items: center; }
+    #footer { padding: 2rem 1.5rem; }
+    .footer-inner { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+  }
+
+
+  .sol-btn {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.65rem 1.6rem;
+    font-family: 'Outfit', sans-serif; font-weight: 700;
+    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+    text-decoration: none; color: #ffffff;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .sol-btn:hover { opacity: 0.85; transform: translateY(-2px); }
+  .sol-card[data-color="gold"]     .sol-btn { background: var(--gold); color: #111111; }
+  .sol-card[data-color="ruby"]     .sol-btn { background: var(--ruby); }
+  .sol-card[data-color="amethyst"] .sol-btn { background: var(--amethyst); }
+  .sol-card[data-color="emerald"]  .sol-btn { background: var(--emerald); }
+
+
+  /* ── UNIVERSAL BUTTON STANDARD ── */
+  .btn-primary, .btn-ghost, .sol-btn, .nav-cta {
+    border-radius: 6px !important;
+    padding: 0.8rem 1.6rem !important;
+    font-size: 0.75rem !important;
+    letter-spacing: 0.15em !important;
+    min-width: 160px !important;
+    text-align: center !important;
+    display: inline-block !important;
+  }
+
+
+  /* What We Do card buttons — smaller to fit cards */
+  .sol-card .sol-btn {
+    padding: 0.55rem 1.1rem !important;
+    font-size: 0.62rem !important;
+    min-width: 0 !important;
+    letter-spacing: 0.12em !important;
+    border-radius: 6px !important;
+  }
+
+</style>
+</head>
+<body>
+
+
+<!-- NAV — 4 pages only -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo"><span class="afri">AFRI</span><span class="bao">BAO</span></a>
+  <div class="nav-links">
+    <a href="index.html" class="active-page">Home</a>
+    <a href="afribao-about.html">About Us</a>
+    <a href="afribao-solutions.html">Our Solutions</a>
+    <a href="afribao-contact.html" class="nav-cta">Start Here</a>
+  
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="baobab-canvas"></canvas>
+  <div class="hero-content">
+    <span class="hero-eyebrow">The African Capability Engine</span>
+    <h1 class="hero-title"><span class="afri">AFRI</span><span class="bao">BAO</span></h1>
+    <p class="hero-subtitle">Rooted in Africa, built for the world. We build the digital foundation African businesses need to grow.</p>
+    <div class="hero-buttons">
+      <a href="afribao-pricing.html" class="btn-primary">Start With Your Website</a>
+      <a href="afribao-solutions.html" class="btn-ghost">Explore Our Solutions</a>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span class="scroll-text">Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- PITCH PANEL -->
+<section id="pitch">
+  <div class="pitch-grid">
+  <div class="pitch-left">
+    <span class="section-eyebrow reveal">Where It Starts</span>
+    <h2 class="pitch-headline reveal reveal-d1">Your Website Isn't a Brochure. It's Your First Impression.</h2>
+    <p class="pitch-sub reveal reveal-d2">This is where we begin.</p>
+    <p class="pitch-body reveal reveal-d2">Your website is often the first conversation you have with a client who has never met you. We make sure you leave a great first impression.</p>
+    <p class="pitch-body reveal reveal-d3">We build beautiful websites for African businesses.</p>
+    <div class="reveal reveal-d4" style="margin-top:2rem;display:flex;gap:1rem;align-items:center;flex-wrap:wrap;">
+      <a href="afribao-pricing.html" class="btn-primary">Start With Your Website</a>
+      <a href="afribao-solutions.html" style="color:var(--gold);font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:underline;text-underline-offset:4px;font-family:'Outfit',sans-serif;">Explore All Solutions</a>
+    </div>
+  </div>
+  <div class="pitch-right reveal reveal-d2">
+    <div class="mockup-frame">
+      <div class="mockup-inner">
+        <div class="mock-nav"></div>
+        <div class="mock-hero"><span class="mock-hero-text">AFRIBAO CLIENT</span></div>
+        <div class="mock-grid">
+          <div class="mock-card"></div>
+          <div class="mock-card"></div>
+          <div class="mock-card"></div>
+        </div>
+        <div style="height:18%;background:rgba(200,150,12,0.03);border-radius:1px;margin-top:0.3rem;"></div>
+      </div>
+    </div>
+    <p class="mockup-caption"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.12em;color:var(--warm-white);">View Our Work</span></p>
+  </div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section id="manifesto">
+  <div class="manifesto-ghost">ROOTS</div>
+  <p class="manifesto-line1 reveal">"The Baobab does not boast of its shade.</p>
+  <p class="manifesto-line2 reveal reveal-d1"<span style="color:#F2E8D5;">It simply</span> <span style="color:#2E7D32;">grows,</span> <span style="color:#F2E8D5;">and everything around it</span> flourishes."</p>
+  <p class="manifesto-body reveal reveal-d2">A well-run business works the same way. It creates jobs. It stabilises families. It gives back to the community around it.</p>
+  <p class="manifesto-body reveal reveal-d3">We help you build that kind of business. A website that works for you. Systems that free you. A strategy that takes you further than you could go alone.</p>
+  <p class="manifesto-closing reveal reveal-d4"><span style="color:#F5F5F5;">We tend the</span> <span style="color:#C0392B;">roots</span>. <span style="color:#F5F5F5;">You grow the</span> <span style="color:#2E7D32;">tree</span>.</p>
+</section>
+
+<!-- SOLUTIONS PREVIEW -->
+<section id="solutions-preview">
+  <div class="section-header">
+    <div>
+      <span class="section-eyebrow reveal">What We Do</span>
+      <h2 class="section-title reveal reveal-d1">FOUR SOLUTIONS.<br>ONE DIRECTION.</h2>
+    </div>
+    <p class="section-desc reveal reveal-d2">Our solutions are designed to work seamlessly together or deliver value independently. A client may engage with any solution based on their current need. Every path leads to one outcome: a business built to last.</p>
+  </div>
+  <div class="solutions-grid">
+    <a href="afribao-pricing.html" class="sol-card" data-color="gold">
+      <span class="sol-num">01</span>
+      <span class="sol-label">Foundation</span>
+      <h3 class="sol-title">Premium Website Development</h3>
+      <p class="sol-desc">Digital presence, brand clarity, global visibility. This is the door, not the destination.</p>
+      <a href="afribao-pricing.html" class="sol-btn">Start With Your Website</a>
+    </a>
+    <a href="afribao-systems.html" class="sol-card" data-color="ruby">
+      <span class="sol-num">02</span>
+      <span class="sol-label">Systems</span>
+      <h3 class="sol-title">Systems & Automation</h3>
+      <p class="sol-desc">AI, CRM, workflows, process documentation. From founder-dependent chaos to operational structure.</p>
+      <span class="sol-btn">Build Your Systems</span>
+    </a>
+    <a href="afribao-solutions.html" class="sol-card" data-color="amethyst">
+      <span class="sol-num">03</span>
+      <span class="sol-label">Strategy</span>
+      <h3 class="sol-title">Strategic Consulting</h3>
+      <p class="sol-desc">Business structuring, positioning, scaling strategy. Investment-ready. Cross-border growth.</p>
+      <span class="sol-btn">Start The Conversation</span>
+    </a>
+    <a href="afribao-contact.html" class="sol-card" data-color="emerald">
+      <span class="sol-num">04</span>
+      <span class="sol-label">Launch</span>
+      <h3 class="sol-title">Startup Enablement</h3>
+      <p class="sol-desc">Formation roadmaps, early systems, and launch infrastructure for new ventures built to last.</p>
+      <span class="sol-btn">Launch Right</span>
+    </a>
+  </div>
+</section>
+
+<!-- GET IN TOUCH -->
+<section id="contact">
+  <div class="contact-inner">
+    <span class="section-eyebrow reveal">Get In Touch</span>
+    <h2 class="contact-headline reveal reveal-d1">BUILD WHAT<br><span class="contact-gold">LASTS.</span></h2>
+    <p class="contact-sub reveal reveal-d2"><span style="color:#F5F5F5;">We tend the</span> <span style="color:#C0392B;">roots</span>. <span style="color:#F5F5F5;">You grow the</span> <span style="color:#2E7D32;">tree</span>.</p>
+    <div class="contact-actions reveal reveal-d3">
+      <a href="afribao-pricing.html" class="btn-primary">Start With Your Website</a>
+      <a href="#solutions-preview" class="btn-ghost">Explore Solutions</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="footer-inner">
+    <span class="footer-logo"><span class="footer-afri">AFRI</span><span class="footer-bao">BAO</span></span>
+    <p class="footer-tagline">The African Capability Engine</p>
+    <p class="footer-copy">&copy; 2026 AfriBao. All rights reserved. &nbsp;&middot;&nbsp; <a href="mailto:hello@afribao.com">hello@afribao.com</a> &nbsp;&middot;&nbsp; afribao.com</p>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js">
+// ── HAMBURGER ──
+const hamburger = document.getElementById('hamburger');
+const navLinks  = document.querySelector('.nav-links');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  navLinks.classList.toggle('open');
+});
+// Close on link click
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  hamburger.classList.remove('open');
+  navLinks.classList.remove('open');
+}));
+
+</script><script>
+
+
+// ── NAV SCROLL ──────────────────────────────────────────────
+window.addEventListener('scroll', () =>
+  document.getElementById('nav').classList.toggle('scrolled', scrollY > 50));
+
+// ── SCROLL REVEAL ───────────────────────────────────────────
+const ro = new IntersectionObserver(entries =>
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+// ── BAOBAB 3D CANVAS ────────────────────────────────────────
+const canvas = document.getElementById('baobab-canvas');
+const ctx    = canvas.getContext('2d');
+let W, H, frameT = 0, lastPulse = 0;
+const mouse = { x: -9999, y: -9999 };
+
+// Colours: ONLY gold and warm white
+const GOLD  = [200, 150, 12];
+const WHITE = [242, 232, 213];
+function pickLight() { return Math.random() < 0.5 ? GOLD : WHITE; }
+function rgba(rgb, a) { return `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${a})`; }
+
+// ── 3D Spin state ────────────────────────────────────────────
+// Tree geometry stored in 3D (x, y, z). Y = up axis (screen Y inverted).
+// Spins around Y-axis. Speed halved from previous 0.004 → 0.002.
+let spinAngle = 0;
+const SPIN_SPEED = 0.002;
+
+// Perspective projection
+// x3 = horizontal offset from canvas centre, y3 = screen-Y pixels, z3 = depth offset
+// Only horizontal position gets foreshortened; vertical is already in screen space.
+const FOV = 700;
+function project(x3, y3, z3) {
+  const scale = FOV / (FOV + z3 + 350);
+  return {
+    sx: W * 0.5 + x3 * scale,
+    sy: y3,   // screen-Y unchanged — perspective only affects X and line widths
+    scale,
+    z: z3
+  };
+}
+
+// Rotate point around Y-axis by spinAngle
+function rotY(x, y, z) {
+  return {
+    x: x * Math.cos(spinAngle) - z * Math.sin(spinAngle),
+    y,
+    z: x * Math.sin(spinAngle) + z * Math.cos(spinAngle)
+  };
+}
+
+// ── Tree storage (3D) ────────────────────────────────────────
+// Geometry is built in 3D local coords, then rotY+project at draw time.
+// x = horizontal, y = vertical (screen Y), z = depth
+let trunkSegs  = []; // {x1,y1,z1, x2,y2,z2, w1,w2, normY}
+let rootSegs3  = []; // {x1,y1,z1, cpx,cpy,cpz, x2,y2,z2, w, depth}
+let branchSegs3= []; // {x1,y1,z1, cp1x..cp2z, x2,y2,z2, w, depth, branchId}
+let nodes3     = []; // {x,y,z, r, rgb, phase}
+let leafNodes3 = []; // {x,y,z, r, rgb, phase}
+let particles  = [];
+let pulses     = []; // rising trunk + drop
+let branchPulses = [];
+
+function rnd(a, b) { return a + Math.random() * (b - a); }
+
+// All structure colours derive from GOLD and WHITE only.
+// Trunk: gold at crown fading to dim gold/brown at base (no green, no other hues)
+function trunkRGB(normY) { // normY: 0=crown(top), 1=base
+  // Entire trunk = earthy brown, darker at base
+  return [Math.round(110 - 40*normY), Math.round(68 - 25*normY), Math.round(28 - 10*normY)];
+}
+// Branches: brown at base → emerald green at tips
+function branchRGB(depth) {
+  const t = Math.min(depth / 4, 1);
+  const brown = [110, 68, 28];
+  const green = [25, 140, 55];
+  return [
+    Math.round(brown[0] + (green[0]-brown[0])*t),
+    Math.round(brown[1] + (green[1]-brown[1])*t),
+    Math.round(brown[2] + (green[2]-brown[2])*t)
+  ];
+}
+// Roots: very dark muted gold — barely visible, structural
+function rootRGB(depth) {
+  const t = Math.min(depth/3, 1);
+  return [Math.round(90 - 30*t), Math.round(55 - 20*t), Math.round(20 - 8*t)];
+}
+
+function gf(sx, sy) {
+  const d = Math.hypot(sx - mouse.x, sy - mouse.y);
+  return d < 130 ? 1 + (1 - d/130) * 1.4 : 1;
+}
+
+// ── Build 3D geometry ────────────────────────────────────────
+function buildTree() {
+  trunkSegs=[]; rootSegs3=[]; branchSegs3=[]; nodes3=[]; leafNodes3=[];
+  particles=[]; pulses=[]; branchPulses=[];
+
+  const baseY  = H * 0.92;
+  const crownY = H * 0.30;
+  const N = 9;
+  const trunkPts3 = []; // raw 3D points along trunk centreline
+
+  // Trunk — slight wobble in X and Z for organic feel
+  for (let i = 0; i <= N; i++) {
+    const t = i / N;
+    const wobX = Math.sin(t * 2.2 + 0.4) * rnd(2, 7) * (1 - t*0.5);
+    const wobZ = Math.cos(t * 1.8 + 1.0) * rnd(1, 5) * (1 - t*0.4);
+    const y = baseY + (crownY - baseY) * t;
+    // Trunk width: massive at base, tapers. w in px before projection.
+    const w = W * 0.072 * (1 - t * 0.70) + rnd(1, 3);
+    trunkPts3.push({ x: wobX, y, z: wobZ, w, normY: 1 - t });
+  }
+
+  for (let i = 1; i < trunkPts3.length; i++) {
+    const a = trunkPts3[i-1], b = trunkPts3[i];
+    trunkSegs.push({ x1:a.x,y1:a.y,z1:a.z, x2:b.x,y2:b.y,z2:b.z, w1:a.w,w2:b.w, normY:(a.normY+b.normY)*0.5 });
+    if (i > 0 && i < trunkPts3.length-1 && Math.random() > 0.4)
+      nodes3.push({ x:a.x+rnd(-4,4), y:a.y, z:a.z+rnd(-4,4), r:rnd(0.5,1.0), rgb:pickLight(), phase:rnd(0,Math.PI*2) });
+  }
+
+  // Roots — spread in 3D around base
+  for (let r = 0; r < 12; r++) {
+    const azimuth = (r / 12) * Math.PI * 2; // full circle in 3D
+    const spread  = rnd(0.3, 0.9);           // how far outward
+    const angle2D = rnd(-0.3, 0.1);          // slight downward tilt
+    growRoot3(0, baseY, 0, azimuth, spread, rnd(55, 110), rnd(3, 5), 0);
+  }
+
+  // Primary branches — fan from crown top
+  const branchCount = 14;
+  for (let b = 0; b < branchCount; b++) {
+    const azimuth  = (b / branchCount) * Math.PI * 2 + rnd(-0.1, 0.1);
+    const elevation = rnd(0.15, 0.65);
+    const t   = rnd(0.85, 1.0);
+    const idx = Math.min(Math.floor(t * N), N-1);
+    const ap  = trunkPts3[idx];
+    growBranch3(ap.x, ap.y, ap.z, azimuth, elevation, rnd(55, 120), rnd(3, 5), 0, b);
+  }
+
+  // Upper canopy branches — fill the zone between nav bar and eyebrow text (top 30% of canvas)
+  // These are longer, higher-elevation branches that reach into H*0.02–H*0.25
+  const upperCount = 10;
+  for (let b = 0; b < upperCount; b++) {
+    const azimuth   = (b / upperCount) * Math.PI * 2 + rnd(-0.15, 0.15);
+    const elevation = rnd(0.05, 0.25); // low elevation — branches spread wide horizontally
+    const ap = trunkPts3[N]; // attach at very tip of trunk
+    growBranch3(ap.x, ap.y, ap.z, azimuth, elevation, rnd(100, 180), rnd(2, 4), 0, branchCount + b);
+  }
+
+  for (let i = 0; i < 55; i++)
+    particles.push({ x:rnd(0,W), y:rnd(0,H), size:rnd(0.3,0.7), speed:rnd(0.12,0.42), drift:rnd(-0.18,0.18), op:rnd(0.04,0.14), rgb:pickLight() });
+}
+
+function growRoot3(x, y, z, azimuth, spread, len, width, depth) {
+  if (len < 9 || depth > 3) return;
+  const ex = x + Math.cos(azimuth) * len * spread;
+  const ey = Math.min(y + len * rnd(0.2, 0.5), H * 0.97);
+  const ez = z + Math.sin(azimuth) * len * spread;
+  const cpx = x+(ex-x)*0.4+rnd(-8,8), cpy=y+(ey-y)*0.35+rnd(3,12), cpz=z+(ez-z)*0.4+rnd(-8,8);
+  rootSegs3.push({ x1:x,y1:y,z1:z, cpx,cpy,cpz, x2:ex,y2:ey,z2:ez, w:width*Math.pow(0.68,depth), depth });
+  if (Math.random() > 0.42 && depth < 3) {
+    growRoot3(ex, ey, ez, azimuth+rnd(-0.5,0.5), spread, len*rnd(0.48,0.68), width, depth+1);
+    if (Math.random() > 0.5)
+      growRoot3(ex, ey, ez, azimuth+rnd(-0.7,0.7), spread*0.8, len*rnd(0.35,0.55), width, depth+1);
+  }
+}
+
+function growBranch3(x, y, z, azimuth, elevation, len, width, depth, branchId) {
+  if (len < 9 || depth > 4) {
+    leafNodes3.push({ x,y,z, r:rnd(0.5,1.0), rgb:pickLight(), phase:rnd(0,Math.PI*2), branchId });
+    return;
+  }
+  // Direction vector from azimuth + elevation
+  const sinEl = Math.sin(elevation * Math.PI * 0.5);
+  const cosEl = Math.cos(elevation * Math.PI * 0.5);
+  const dx = Math.cos(azimuth) * cosEl;
+  const dy = -sinEl; // screen Y: negative = upward
+  const dz = Math.sin(azimuth) * cosEl;
+
+  const droop = depth * 0.03;
+  const cp1x = x + dx*len*0.3 + rnd(-4,4);
+  const cp1y = y + dy*len*0.3 + droop*len*0.04;
+  const cp1z = z + dz*len*0.3 + rnd(-4,4);
+  const cp2x = x + dx*len*0.65 + rnd(-4,4);
+  const cp2y = y + dy*len*0.65 + droop*len*0.1;
+  const cp2z = z + dz*len*0.65 + rnd(-4,4);
+  const ex   = x + dx*len + rnd(-4,4);
+  const ey   = Math.max(H*0.01, y + dy*len + droop*len*0.18);
+  const ez   = z + dz*len + rnd(-4,4);
+
+  branchSegs3.push({ x1:x,y1:y,z1:z, cp1x,cp1y,cp1z, cp2x,cp2y,cp2z, x2:ex,y2:ey,z2:ez, w:width, depth, branchId });
+  if (depth < 2) nodes3.push({ x:ex,y:ey,z:ez, r:rnd(0.4,0.85), rgb:pickLight(), phase:rnd(0,Math.PI*2) });
+
+  const forks = depth < 2 ? Math.floor(rnd(2,4)) : Math.floor(rnd(1,3));
+  for (let f = 0; f < forks; f++) {
+    const newAz  = azimuth  + rnd(-0.55, 0.55);
+    const newEl  = Math.max(0.05, elevation + rnd(-0.25, 0.2));
+    growBranch3(ex, ey, ez, newAz, newEl, len*rnd(0.5,0.68), width*0.62, depth+1, branchId);
+  }
+}
+
+// ── 3D project helper: rotate then project ───────────────────
+function proj(x, y, z) {
+  const r = rotY(x, y, z);
+  return project(r.x, r.y, r.z);
+}
+
+// Z depth of midpoint (for depth sort)
+function midZ3(x1,z1,x2,z2) {
+  const m1 = rotY(x1,0,z1), m2 = rotY(x2,0,z2);
+  return (m1.z + m2.z) * 0.5;
+}
+
+// ── Pulse spawners ───────────────────────────────────────────
+// Trunk rise: store 3D trunk point index progress
+function spawnTrunkRise() {
+  pulses.push({ isDrop:false, prog:0, speed:rnd(0.0022,0.004), size:rnd(1.4,2.4), rgb:pickLight() });
+}
+function spawnBranchPulse(branchId) {
+  const segs = branchSegs3.filter(s => s.branchId===branchId && s.depth===0);
+  if (!segs.length) return;
+  branchPulses.push({ branchId, segIdx:0, prog:0, speed:rnd(0.010,0.018), size:rnd(1.0,1.7), rgb:pickLight() });
+}
+function spawnDrop(sx, sy) {
+  pulses.push({ isDrop:true, x:sx, y:sy, vx:rnd(-0.5,0.5), vy:rnd(0.5,1.5), rgb:pickLight(), size:rnd(0.8,1.3), life:1.0 });
+}
+
+// ── Build a flat list of renderable items for depth sort ─────
+function buildRenderList() {
+  const list = [];
+
+  // Roots
+  rootSegs3.forEach((s,i) => {
+    const zMid = midZ3(s.x1,s.z1,s.x2,s.z2);
+    list.push({ type:'root', s, i, zMid });
+  });
+
+  // Trunk segs
+  trunkSegs.forEach((s,i) => {
+    const zMid = midZ3(s.x1,s.z1,s.x2,s.z2);
+    list.push({ type:'trunk', s, i, zMid });
+  });
+
+  // Branches
+  branchSegs3.forEach((s,i) => {
+    const zMid = midZ3(s.x1,s.z1,s.x2,s.z2);
+    list.push({ type:'branch', s, i, zMid });
+  });
+
+  // Nodes
+  nodes3.forEach((n,i) => {
+    const r = rotY(n.x,n.y,n.z);
+    list.push({ type:'node', n, i, zMid: r.z });
+  });
+
+  // Leaves
+  leafNodes3.forEach((l,i) => {
+    const r = rotY(l.x,l.y,l.z);
+    list.push({ type:'leaf', l, i, zMid: r.z });
+  });
+
+  // Sort back-to-front (painter's algorithm)
+  list.sort((a,b) => a.zMid - b.zMid);
+  return list;
+}
+
+// ── Draw ─────────────────────────────────────────────────────
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  frameT++;
+  spinAngle += SPIN_SPEED;
+
+  if (frameT - lastPulse > 100) { spawnTrunkRise(); lastPulse = frameT; }
+
+  const renderList = buildRenderList();
+
+  renderList.forEach(item => {
+    if (item.type === 'root') {
+      const s = item.s, i = item.i;
+      const p1 = proj(s.x1,s.y1,s.z1), pc = proj(s.cpx,s.cpy,s.cpz), p2 = proj(s.x2,s.y2,s.z2);
+      const pulse = (Math.sin(frameT*0.016 + i*0.65)+1)*0.5;
+      const g = gf(p2.sx,p2.sy);
+      // Depth shading: further back = more transparent
+      const depthFade = Math.max(0.3, (p2.scale+0.3)*0.7);
+      const rgb = rootRGB(s.depth);
+      const a = (0.48+pulse*0.28)*Math.min(g,2)*depthFade;
+      ctx.beginPath(); ctx.moveTo(p1.sx,p1.sy); ctx.quadraticCurveTo(pc.sx,pc.sy,p2.sx,p2.sy);
+      ctx.strokeStyle=rgba(rgb,a); ctx.lineWidth=Math.max(0.5, s.w*p2.scale*2.5); ctx.lineCap='round'; ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(p1.sx,p1.sy); ctx.quadraticCurveTo(pc.sx,pc.sy,p2.sx,p2.sy);
+      ctx.strokeStyle=rgba(rgb,a*0.12); ctx.lineWidth=s.w*p2.scale*7; ctx.stroke();
+    }
+
+    if (item.type === 'trunk') {
+      const s = item.s, i = item.i;
+      const pa = proj(s.x1,s.y1,s.z1), pb = proj(s.x2,s.y2,s.z2);
+      const pulse = (Math.sin(frameT*0.018 + i*0.5)+1)*0.5;
+      const rgb = trunkRGB(s.normY);
+      const depthFade = Math.max(0.5, (pa.scale+pb.scale)*0.5+0.2);
+      // Width scales with projection AND perspective — trunk looks truly 3D
+      const segW = ((s.w1*pa.scale + s.w2*pb.scale)*0.5) * 2.5;
+      ctx.beginPath(); ctx.moveTo(pa.sx,pa.sy); ctx.lineTo(pb.sx,pb.sy);
+      ctx.strokeStyle = rgba(rgb, (0.88+pulse*0.1)*depthFade);
+      ctx.lineWidth = Math.max(3, segW);
+      ctx.lineCap='round'; ctx.stroke();
+      // Glow halo — gold only
+      ctx.beginPath(); ctx.moveTo(pa.sx,pa.sy); ctx.lineTo(pb.sx,pb.sy);
+      ctx.strokeStyle = rgba(GOLD, (0.022+pulse*0.022)*depthFade);
+      ctx.lineWidth = Math.max(6, segW*1.7); ctx.stroke();
+    }
+
+    if (item.type === 'branch') {
+      const s = item.s, i = item.i;
+      const p1  = proj(s.x1,s.y1,s.z1),   p2  = proj(s.x2,s.y2,s.z2);
+      const pc1 = proj(s.cp1x,s.cp1y,s.cp1z), pc2 = proj(s.cp2x,s.cp2y,s.cp2z);
+      const pulse = (Math.sin(frameT*0.02 + i*0.38)+1)*0.5;
+      const g = gf(p2.sx, p2.sy);
+      const rgb = branchRGB(s.depth);
+      const depthFade = Math.max(0.25, (p1.scale+p2.scale)*0.5+0.15);
+      const a = (0.65+pulse*0.32)*Math.min(g,2.2)*depthFade;
+      const lw = Math.max(0.4, s.w*(1-s.depth*0.1)*p1.scale*2.8);
+      ctx.beginPath(); ctx.moveTo(p1.sx,p1.sy); ctx.bezierCurveTo(pc1.sx,pc1.sy,pc2.sx,pc2.sy,p2.sx,p2.sy);
+      ctx.strokeStyle=rgba(rgb,a); ctx.lineWidth=lw; ctx.lineCap='round'; ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(p1.sx,p1.sy); ctx.bezierCurveTo(pc1.sx,pc1.sy,pc2.sx,pc2.sy,p2.sx,p2.sy);
+      ctx.strokeStyle=rgba(rgb,a*0.1); ctx.lineWidth=lw*4.5; ctx.stroke();
+    }
+
+    if (item.type === 'node') {
+      const n = item.n, i = item.i;
+      const sp = proj(n.x,n.y,n.z);
+      const pulse = (Math.sin(frameT*0.024 + n.phase)+1)*0.5;
+      const g = gf(sp.sx,sp.sy);
+      const depthFade = Math.max(0.3, sp.scale+0.2);
+      const r = n.r * sp.scale * 2.5 * Math.min(g,2.0);
+      const gr = ctx.createRadialGradient(sp.sx,sp.sy,0,sp.sx,sp.sy,r*4);
+      gr.addColorStop(0, rgba(n.rgb,(0.5+pulse*0.38)*Math.min(g,2)*depthFade));
+      gr.addColorStop(1, rgba(n.rgb,0));
+      ctx.beginPath(); ctx.arc(sp.sx,sp.sy,r*4,0,Math.PI*2); ctx.fillStyle=gr; ctx.fill();
+      ctx.beginPath(); ctx.arc(sp.sx,sp.sy,Math.max(0.3,r),0,Math.PI*2);
+      ctx.fillStyle=rgba(n.rgb,(0.85+pulse*0.12)*depthFade); ctx.fill();
+    }
+
+    if (item.type === 'leaf') {
+      const l = item.l, i = item.i;
+      const sp = proj(l.x,l.y,l.z);
+      const pulse = (Math.sin(frameT*0.028 + i*0.26 + l.phase)+1)*0.5;
+      const g = gf(sp.sx,sp.sy);
+      const depthFade = Math.max(0.25, sp.scale+0.15);
+      const h = l.r * sp.scale * 2.5;
+      const gr = ctx.createRadialGradient(sp.sx,sp.sy,0,sp.sx,sp.sy,h*3);
+      gr.addColorStop(0, rgba(l.rgb,(0.3+pulse*0.22)*Math.min(g,2.2)*depthFade));
+      gr.addColorStop(1, rgba(l.rgb,0));
+      ctx.beginPath(); ctx.arc(sp.sx,sp.sy,h*3,0,Math.PI*2); ctx.fillStyle=gr; ctx.fill();
+      ctx.beginPath(); ctx.arc(sp.sx,sp.sy,Math.max(0.3,h),0,Math.PI*2);
+      ctx.fillStyle=rgba(l.rgb,(0.6+pulse*0.3)*depthFade); ctx.fill();
+    }
+  });
+
+  // ── Trunk pulses (rising) ────────────────────────────────
+  // Store trunk 3D centreline for pulse travel
+  const tc3 = trunkSegs;
+  pulses = pulses.filter(p => {
+    if (p.isDrop) {
+      p.x += p.vx; p.y += p.vy; p.vy += 0.055; p.life -= 0.017;
+      if (p.life <= 0 || p.y > H*0.97) return false;
+      const op = p.life * 0.55;
+      const gr = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.size*2.2);
+      gr.addColorStop(0,rgba(p.rgb,op)); gr.addColorStop(1,rgba(p.rgb,0));
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.size*2.2,0,Math.PI*2); ctx.fillStyle=gr; ctx.fill();
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.size*0.4,0,Math.PI*2); ctx.fillStyle=rgba(p.rgb,op*1.2); ctx.fill();
+      return true;
+    }
+    p.prog += p.speed;
+    // Interpolate along trunk segment chain
+    const totalSegs = tc3.length;
+    const segT = p.prog * totalSegs;
+    const sIdx = Math.min(Math.floor(segT), totalSegs-1);
+    const sFrac = segT - sIdx;
+    const seg = tc3[sIdx];
+    const ix  = seg.x1 + (seg.x2-seg.x1)*sFrac;
+    const iy  = seg.y1 + (seg.y2-seg.y1)*sFrac;
+    const iz  = seg.z1 + (seg.z2-seg.z1)*sFrac;
+    const sp  = proj(ix, iy, iz);
+    const gr  = ctx.createRadialGradient(sp.sx,sp.sy,0,sp.sx,sp.sy,p.size*2.8*sp.scale);
+    gr.addColorStop(0,rgba(p.rgb,0.95)); gr.addColorStop(1,rgba(p.rgb,0));
+    ctx.beginPath(); ctx.arc(sp.sx,sp.sy,p.size*2.8*sp.scale,0,Math.PI*2); ctx.fillStyle=gr; ctx.fill();
+    ctx.beginPath(); ctx.arc(sp.sx,sp.sy,p.size*0.5*sp.scale,0,Math.PI*2); ctx.fillStyle=rgba(p.rgb,1); ctx.fill();
+    if (p.prog >= 1) {
+      const ids = [...new Set(branchSegs3.map(s=>s.branchId))];
+      ids.sort(()=>0.5-Math.random()).slice(0,Math.floor(rnd(3,6))).forEach(id=>spawnBranchPulse(id));
+      return false;
+    }
+    return true;
+  });
+
+  // ── Branch pulses ────────────────────────────────────────
+  branchPulses = branchPulses.filter(bp => {
+    const segs = branchSegs3.filter(s=>s.branchId===bp.branchId).sort((a,b)=>a.depth-b.depth);
+    if (!segs.length) return false;
+    const seg = segs[Math.min(bp.segIdx, segs.length-1)];
+    bp.prog += bp.speed;
+    const t = Math.min(bp.prog,1), mt = 1-t;
+    const ix = mt*mt*mt*seg.x1 + 3*mt*mt*t*seg.cp1x + 3*mt*t*t*seg.cp2x + t*t*t*seg.x2;
+    const iy = mt*mt*mt*seg.y1 + 3*mt*mt*t*seg.cp1y + 3*mt*t*t*seg.cp2y + t*t*t*seg.y2;
+    const iz = mt*mt*mt*seg.z1 + 3*mt*mt*t*seg.cp1z + 3*mt*t*t*seg.cp2z + t*t*t*seg.z2;
+    const sp = proj(ix, iy, iz);
+    const gr = ctx.createRadialGradient(sp.sx,sp.sy,0,sp.sx,sp.sy,bp.size*2.2*sp.scale);
+    gr.addColorStop(0,rgba(bp.rgb,0.92)); gr.addColorStop(1,rgba(bp.rgb,0));
+    ctx.beginPath(); ctx.arc(sp.sx,sp.sy,bp.size*2.2*sp.scale,0,Math.PI*2); ctx.fillStyle=gr; ctx.fill();
+    ctx.beginPath(); ctx.arc(sp.sx,sp.sy,bp.size*0.45*sp.scale,0,Math.PI*2); ctx.fillStyle=rgba(bp.rgb,1); ctx.fill();
+    if (bp.prog >= 1) {
+      bp.prog = 0; bp.segIdx++;
+      if (bp.segIdx >= segs.length) { spawnDrop(sp.sx, sp.sy); return false; }
+    }
+    return true;
+  });
+
+  // ── Ambient particles ────────────────────────────────────
+  particles.forEach(p => {
+    p.y -= p.speed; p.x += p.drift;
+    if (p.y < -10) { p.y = H+10; p.x = Math.random()*W; }
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+    ctx.fillStyle = rgba(p.rgb, p.op); ctx.fill();
+  });
+
+  requestAnimationFrame(draw);
+}
+
+canvas.addEventListener('mousemove',e=>{const r=canvas.getBoundingClientRect();mouse.x=e.clientX-r.left;mouse.y=e.clientY-r.top;mouse.y=e.clientY-r.top;});
+canvas.addEventListener('mouseleave',()=>{mouse.x=-9999;mouse.y=-9999;});
+
+function resize(){
+  W=canvas.width=canvas.offsetWidth;
+  H=canvas.height=canvas.offsetHeight;
+  buildTree();
+}
+window.addEventListener('resize',resize);
+resize();
+draw();
+</script>
+</body>
+</html>

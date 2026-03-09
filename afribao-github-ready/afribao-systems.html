@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Systems & Automation — AfriBao</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C8960C;
+    --gold-pale: #E8B84B;
+    --emerald: #1B6B3A;
+    --emerald-bright: #2E9E5A;
+    --sapphire: #1565C0;
+    --amethyst: #6A1B9A;
+    --ruby: #B71C1C;
+    --ruby-bright: #E53935;
+    --ruby-pale: rgba(183,28,28,0.08);
+    --charcoal: #1A1A1A;
+    --near-black: #0A0202;
+    --warm-white: #F2E8D5;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+  body {
+    background: var(--near-black);
+    color: var(--warm-white);
+    font-family: 'Outfit', sans-serif;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpolygon points='0,0 0,20 5,15 9,24 12,23 8,14 14,14' fill='%23C8960C' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E"), auto;
+    overflow-x: hidden;
+    padding-top: 76px;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem 4rem;
+    background: #1A1A1A;
+    border-bottom: 1px solid rgba(183,28,28,0.15);
+  }
+  .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 0.1em; text-decoration: none; }
+  .nav-logo .afri { color: var(--warm-white); }
+  .nav-logo .bao  { color: var(--gold); }
+  .nav-links { display: flex; gap: 0.4rem; align-items: center; }
+  .nav-links a {
+    font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--warm-white); text-decoration: none;
+    padding: 0.5rem 1rem; opacity: 0.7; transition: opacity 0.2s, color 0.2s; cursor: inherit;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--gold); }
+  .nav-links a.active-page { color: var(--ruby-bright); opacity: 1; }
+  .nav-cta { padding: 0.55rem 1.4rem !important; border: 1px solid var(--gold); color: var(--gold) !important; opacity: 1 !important; transition: background 0.2s !important; }
+  .nav-cta:hover { background: rgba(200,150,12,0.1) !important; }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: inherit; padding: 0.5rem; background: none; border: none; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--warm-white); transition: transform 0.3s, opacity 0.3s; }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ── HERO ── */
+  #hero {
+    position: relative; width: 100%; min-height: calc(100vh - 76px);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; background: var(--near-black);
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 15% 50%, rgba(183,28,28,0.2) 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 25%, rgba(140,20,20,0.14) 0%, transparent 45%),
+      radial-gradient(ellipse at 50% 90%, rgba(183,28,28,0.07) 0%, transparent 50%);
+  }
+  .hero-lines {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      rgba(183,28,28,0.04) 0px, rgba(183,28,28,0.04) 1px,
+      transparent 1px, transparent 80px
+    );
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    padding: 2rem 4rem; max-width: 1200px; width: 100%; margin: 0 auto;
+  }
+  .hero-eyebrow {
+    font-family: 'Outfit', sans-serif; font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 0.5em; text-transform: uppercase;
+    color: var(--ruby-bright);
+    display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;
+  }
+  .hero-eyebrow::before { content: ''; display: block; width: 40px; height: 1px; background: var(--ruby-bright); }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4.5rem, 11vw, 10rem);
+    line-height: 0.88; letter-spacing: 0.01em; margin-bottom: 2.5rem;
+  }
+  .line-white  { color: var(--warm-white); display: block; }
+  .line-ruby   { color: var(--ruby-bright); display: block; }
+  .line-gold   { color: var(--gold); display: block; }
+  .hero-intro {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.1rem, 1.8vw, 1.4rem); line-height: 1.75;
+    color: rgba(242,232,213,0.7); max-width: 580px;
+  }
+  .hero-cta { margin-top: 3rem; }
+  .btn-hero {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    text-decoration: none;
+    padding: 1rem 2.2rem;
+    background: var(--ruby-bright); color: #ffffff;
+    border-radius: 3px;
+    display: inline-block;
+    transition: background 0.2s, transform 0.2s;
+    cursor: inherit;
+  }
+  .btn-hero:hover { background: #c62828; transform: translateY(-2px); }
+
+  .scroll-hint { position: absolute; bottom: 3rem; left: 4rem; display: flex; align-items: center; gap: 1rem; opacity: 0.4; }
+  .scroll-line { width: 1px; height: 48px; background: var(--ruby-bright); animation: scrollPulse 2s ease-in-out infinite; }
+  .scroll-text { font-size: 0.6rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--ruby-bright); }
+  @keyframes scrollPulse { 0%,100% { transform: scaleY(1); opacity: 1; } 50% { transform: scaleY(0.5); opacity: 0.3; } }
+
+  /* ── THE PROBLEM ── */
+  #problem {
+    background: #ffffff; padding: 8rem 4rem;
+  }
+  .section-inner { max-width: 1200px; margin: 0 auto; }
+  .section-eyebrow {
+    font-family: 'Outfit', sans-serif; font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.5em; text-transform: uppercase;
+    color: var(--ruby); display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem;
+  }
+  .section-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--ruby); }
+  .section-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 6vw, 5.5rem); line-height: 0.9; color: #111111; margin-bottom: 1.5rem;
+  }
+  .section-headline span { color: var(--ruby); }
+  .section-desc {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem; font-weight: 500; line-height: 1.75; color: rgba(17,17,17,0.85); max-width: 600px; margin-bottom: 4rem;
+  }
+  .problem-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+    border: 1px solid rgba(17,17,17,0.08); border-radius: 2px; overflow: hidden;
+  }
+  .problem-card {
+    padding: 2.5rem 2rem; background: #fafafa;
+    border-right: 1px solid rgba(17,17,17,0.08);
+    transition: background 0.2s;
+  }
+  .problem-card:last-child { border-right: none; }
+  .problem-card:hover { background: #f2f2f2; }
+  .problem-num {
+    font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: rgba(183,28,28,0.12);
+    line-height: 1; margin-bottom: 1rem;
+  }
+  .problem-title {
+    font-family: 'Outfit', sans-serif; font-size: 0.8rem; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase; color: #111111; margin-bottom: 0.7rem;
+  }
+  .problem-desc { font-size: 0.82rem; line-height: 1.7; color: rgba(17,17,17,0.6); }
+
+  /* ── WHAT WE BUILD ── */
+  #what {
+    background: #111111; padding: 8rem 4rem;
+  }
+  .what-header { margin-bottom: 5rem; }
+  .what-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 6vw, 5.5rem); line-height: 0.9; color: var(--warm-white); margin-bottom: 1.2rem;
+  }
+  .what-headline span { color: var(--ruby-bright); }
+  .what-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; line-height: 1.7; color: rgba(242,232,213,0.5); max-width: 520px;
+  }
+  .systems-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px;
+  }
+  .sys-card {
+    padding: 3rem 2.5rem;
+    background: #181818;
+    border-top: 2px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .sys-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(183,28,28,0.04) 0%, transparent 60%);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .sys-card:hover { border-color: var(--ruby-bright); background: #1e1010; }
+  .sys-card:hover::before { opacity: 1; }
+  .sys-icon {
+    font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem;
+    color: rgba(183,28,28,0.25); line-height: 1; margin-bottom: 1.5rem;
+    letter-spacing: 0.05em;
+  }
+  .sys-title {
+    font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--warm-white); margin-bottom: 0.8rem;
+  }
+  .sys-desc {
+    font-size: 0.82rem; line-height: 1.75; color: rgba(242,232,213,0.5);
+  }
+
+  /* ── HOW IT WORKS ── */
+  #process {
+    background: #ffffff; padding: 8rem 4rem;
+  }
+  .process-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+    margin-top: 4rem; position: relative;
+  }
+  .process-grid::before {
+    content: ''; position: absolute;
+    top: 28px; left: 28px; right: 28px; height: 1px;
+    background: linear-gradient(to right, var(--ruby), rgba(183,28,28,0.1));
+  }
+  .process-step { padding: 0 2rem 0 0; position: relative; }
+  .step-circle {
+    width: 56px; height: 56px; border-radius: 50%;
+    border: 1px solid rgba(183,28,28,0.3);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.5rem; position: relative; z-index: 2;
+    background: #ffffff; transition: border-color 0.3s, background 0.3s;
+  }
+  .process-step:hover .step-circle { border-color: var(--ruby); background: rgba(183,28,28,0.05); }
+  .step-num-text { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: var(--ruby); }
+  .step-title {
+    font-family: 'Outfit', sans-serif; font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase; color: #111111; margin-bottom: 0.6rem;
+  }
+  .step-desc { font-size: 0.78rem; line-height: 1.65; color: rgba(17,17,17,0.5); }
+
+  /* ── PROMISE ── */
+  #promise {
+    background: var(--near-black); padding: 8rem 4rem;
+  }
+  .promise-inner { max-width: 800px; }
+  .promise-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 7vw, 6rem); line-height: 0.88;
+    color: var(--warm-white); margin-bottom: 2rem;
+  }
+  .promise-headline span { color: var(--ruby-bright); }
+  .promise-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.1rem, 1.6vw, 1.3rem); line-height: 1.85;
+    color: rgba(242,232,213,0.6);
+  }
+
+  /* ── CTA ── */
+  #cta {
+    background: #0D0202; padding: 8rem 4rem; text-align: center;
+  }
+  .cta-inner { max-width: 700px; margin: 0 auto; }
+  .cta-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 10vw, 7rem); line-height: 0.88;
+    color: var(--warm-white); margin-bottom: 1.5rem;
+  }
+  .cta-headline .ruby { color: var(--ruby-bright); }
+  .cta-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; line-height: 1.7; color: rgba(242,232,213,0.5); margin-bottom: 3rem;
+  }
+  .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.25em; text-transform: uppercase; text-decoration: none;
+    padding: 0.9rem 2rem; background: var(--warm-white); color: #111111;
+    border-radius: 3px; transition: all 0.2s; cursor: inherit; border: none;
+  }
+  .btn-primary:hover { background: rgba(242,232,213,0.88); transform: translateY(-2px); }
+  .btn-ghost {
+    font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.25em; text-transform: uppercase; text-decoration: none;
+    padding: 0.9rem 2rem; border: 1px solid rgba(183,28,28,0.4); color: var(--ruby-bright);
+    border-radius: 3px; transition: all 0.2s; cursor: inherit;
+  }
+  .btn-ghost:hover { background: rgba(183,28,28,0.08); }
+
+  /* ── FOOTER ── */
+  footer { background: #111111; border-top: 1px solid rgba(200,150,12,0.12); padding: 2.5rem 4rem; }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.1em; text-decoration: none; }
+  .footer-afri { color: var(--warm-white); }
+  .footer-bao  { color: var(--gold); }
+  .footer-tagline { font-size: 0.68rem; letter-spacing: 0.35em; text-transform: uppercase; color: rgba(242,232,213,0.35); }
+  .footer-copy { font-size: 0.68rem; color: rgba(242,232,213,0.3); letter-spacing: 0.05em; }
+  .footer-copy a { color: rgba(242,232,213,0.4); text-decoration: none; }
+
+  /* ── REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+  .reveal-d1 { transition-delay: 0.1s; }
+  .reveal-d2 { transition-delay: 0.2s; }
+  .reveal-d3 { transition-delay: 0.3s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    nav { padding: 1.2rem 2rem; }
+    #hero .hero-content, #problem, #what, #process, #promise, #cta { padding-left: 2rem; padding-right: 2rem; }
+    .problem-grid { grid-template-columns: 1fr; }
+    .problem-card { border-right: none; border-bottom: 1px solid rgba(17,17,17,0.08); }
+    .systems-grid { grid-template-columns: 1fr; }
+    .process-grid { grid-template-columns: repeat(2, 1fr); gap: 3rem 2rem; }
+    .process-grid::before { display: none; }
+    footer { padding: 2rem; }
+  }
+  @media (max-width: 600px) {
+    nav { padding: 1rem 1.5rem; }
+    .hamburger { display: flex; }
+    .nav-links {
+      display: none; position: fixed; top: 60px; left: 0; right: 0;
+      background: #1A1A1A; flex-direction: column; align-items: flex-start;
+      padding: 1.5rem; gap: 0; border-top: 1px solid rgba(200,150,12,0.15); z-index: 99;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a { width: 100%; padding: 0.9rem 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.8rem; }
+    .nav-cta { margin-top: 0.5rem; border-bottom: none !important; }
+    .hero-content { padding: 2rem 1.5rem 3rem; }
+    .hero-title { font-size: clamp(3.5rem, 14vw, 6rem); }
+    #problem, #what, #process, #promise { padding: 4rem 1.5rem; }
+    #cta { padding: 5rem 1.5rem; }
+    .process-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .section-headline, .what-headline { font-size: clamp(2.5rem, 10vw, 4rem); }
+    .promise-headline { font-size: clamp(2.5rem, 10vw, 5rem); }
+    .cta-headline { font-size: clamp(3rem, 14vw, 5rem); }
+    .cta-actions { flex-direction: column; align-items: center; }
+    .btn-primary, .btn-ghost { width: 100%; max-width: 280px; text-align: center; }
+    .footer-inner { flex-direction: column; gap: 0.5rem; }
+  }
+  @media (hover: none) { body { cursor: auto; } a, button { cursor: pointer; } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo"><span class="afri">AFRI</span><span class="bao">BAO</span></a>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="afribao-about.html">About Us</a>
+    <a href="afribao-solutions.html" class="active-page">Our Solutions</a>
+    <a href="afribao-contact.html" class="nav-cta">Start Here</a>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow reveal">Solution 02</p>
+    <h1 class="hero-title reveal reveal-d1">
+      <span class="line-white">Systems</span>
+      <span class="line-ruby">&amp; Automation.</span>
+    </h1>
+    <p class="hero-intro reveal reveal-d2">Most businesses are built on the founder's energy. We build the systems that replace it so your business can grow beyond you.</p>
+    <div class="hero-cta reveal reveal-d3">
+      <a href="afribao-contact.html" class="btn-hero">Build Your Systems →</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span class="scroll-text">Scroll</span>
+  </div>
+</section>
+
+<!-- THE PROBLEM -->
+<section id="problem">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-eyebrow">The Problem</p>
+      <h2 class="section-headline">Operational <span>Chaos</span><br>Kills Growth.</h2>
+      <p class="section-desc">Most African businesses are built on the founder's memory, hustle and availability. We're here to integrate systems that free you up so your business can grow.</p>
+    </div>
+    <div class="problem-grid reveal reveal-d1">
+      <div class="problem-card">
+        <p class="problem-num">01</p>
+        <p class="problem-title">Founder Dependency</p>
+        <p class="problem-desc">Every decision runs through one person. Growth stalls the moment that person is unavailable, ill, or simply overwhelmed.</p>
+      </div>
+      <div class="problem-card">
+        <p class="problem-num">02</p>
+        <p class="problem-title">Manual Everything</p>
+        <p class="problem-desc">Invoices. Follow-ups. Onboarding. Reporting. Hours spent on tasks that should take minutes — or run themselves.</p>
+      </div>
+      <div class="problem-card">
+        <p class="problem-num">03</p>
+        <p class="problem-title">No Institutional Memory</p>
+        <p class="problem-desc">Knowledge lives in people's heads, not in systems. Staff leave and take critical processes with them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT WE BUILD -->
+<section id="what">
+  <div class="section-inner">
+    <div class="what-header reveal">
+      <p class="section-eyebrow" style="color: var(--ruby-bright);">What We Build</p>
+      <h2 class="what-headline">The Operational <span>Backbone.</span></h2>
+      <p class="what-desc">We design and implement the systems that let your business run at scale — with or without you in the room.</p>
+    </div>
+    <div class="systems-grid">
+      <div class="sys-card reveal">
+        <p class="sys-icon">CRM</p>
+        <p class="sys-title">CRM Implementation</p>
+        <p class="sys-desc">Customer relationship management systems configured for your business — tracking leads, clients, communications, and deals in one structured place. No more lost follow-ups. No more deals falling through cracks.</p>
+      </div>
+      <div class="sys-card reveal reveal-d1">
+        <p class="sys-icon">AUTO</p>
+        <p class="sys-title">Workflow Automation</p>
+        <p class="sys-desc">AI-powered automation for repetitive tasks: invoicing, onboarding sequences, email follow-ups, reporting, and notifications. Time previously spent doing, now spent growing.</p>
+      </div>
+      <div class="sys-card reveal reveal-d2">
+        <p class="sys-icon">DOC</p>
+        <p class="sys-title">Process Documentation</p>
+        <p class="sys-desc">Your operations mapped, written, and structured into repeatable SOPs. Every critical function documented so your business can be run, taught, delegated, and scaled.</p>
+      </div>
+      <div class="sys-card reveal reveal-d3">
+        <p class="sys-icon">DATA</p>
+        <p class="sys-title">Reporting & Visibility</p>
+        <p class="sys-desc">Real-time visibility into what your business is doing. Custom reports that give you the numbers you need to make decisions, without building spreadsheets from scratch every month.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="process">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-eyebrow">The Process</p>
+      <h2 class="section-headline">How We <span>Work.</span></h2>
+      <p class="section-desc">A structured engagement from discovery to deployment. No guesswork, no generic templates.</p>
+    </div>
+    <div class="process-grid">
+      <div class="process-step reveal">
+        <div class="step-circle"><span class="step-num-text">01</span></div>
+        <p class="step-title">Discovery</p>
+        <p class="step-desc">We audit your current operations: how work flows, where it breaks, what's manual, and what the business depends on the founder for.</p>
+      </div>
+      <div class="process-step reveal reveal-d1">
+        <div class="step-circle"><span class="step-num-text">02</span></div>
+        <p class="step-title">System Design</p>
+        <p class="step-desc">We design the operational architecture: which tools, which automations, which processes, mapped specifically to your business.</p>
+      </div>
+      <div class="process-step reveal reveal-d2">
+        <div class="step-circle"><span class="step-num-text">03</span></div>
+        <p class="step-title">Build & Integrate</p>
+        <p class="step-desc">We build, configure, and integrate your systems: CRM, automations, reporting, and documentation, tested and ready to run.</p>
+      </div>
+      <div class="process-step reveal reveal-d3">
+        <div class="step-circle"><span class="step-num-text">04</span></div>
+        <p class="step-title">Handover & Support</p>
+        <p class="step-desc">We train your team, document the setup, and provide post-deployment support to ensure the systems stick and scale.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROMISE -->
+<section id="promise">
+  <div class="section-inner">
+    <div class="promise-inner reveal">
+      <h2 class="promise-headline">Structure Is Not <span>Optional.</span></h2>
+      <p class="promise-body">Every business that wants to scale; that wants to take on staff, attract investment, or expand across borders, needs operational infrastructure. You cannot pitch a chaotic business to a serious investor. You cannot delegate work that lives only in your head. The systems we build are not overhead. They are the foundation everything else stands on.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-inner reveal">
+    <h2 class="cta-headline">Ready to <span class="ruby">Build?</span></h2>
+    <p class="cta-sub">Structure your operations. Scale without the chaos.</p>
+    <div class="cta-actions">
+      <a href="afribao-contact.html" class="btn-primary">Build Your Systems</a>
+      <a href="afribao-solutions.html" class="btn-ghost">All Solutions</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <a href="index.html" class="footer-logo"><span class="footer-afri">AFRI</span><span class="footer-bao">BAO</span></a>
+    <p class="footer-tagline">The African Capability Engine</p>
+    <p class="footer-copy">&copy; 2026 AfriBao. All rights reserved. &nbsp;&middot;&nbsp; <a href="mailto:hello@afribao.com">hello@afribao.com</a> &nbsp;&middot;&nbsp; afribao.com</p>
+  </div>
+</footer>
+
+<script>
+const hamburger = document.getElementById('hamburger');
+const navLinks   = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => { hamburger.classList.toggle('open'); navLinks.classList.toggle('open'); });
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { hamburger.classList.remove('open'); navLinks.classList.remove('open'); }));
+
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+</script>
+</body>
+</html>
